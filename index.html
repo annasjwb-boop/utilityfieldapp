@@ -10,25 +10,27 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --purple-deep: #1E3A5F; --blue-light: #4DA6FF; --purple-bright: #2E7D32;
-      --purple-dark: #0D1B2A; --gold: #FF9800; --orange: #E53935;
-      --bg-primary: #FFFFFF; --bg-secondary: #F5F7FA; --bg-tertiary: #E8EDF2;
-      --text-primary: #0D1B2A; --text-secondary: #4A5568; --text-muted: #718096;
-      --border-light: #E2E8F0; --border-medium: #CBD5E0;
-      --success: #10B981; --success-light: #D1FAE5;
+      --purple-deep: #4C1D95; --purple-bright: #8B5CF6; --purple-medium: #7C3AED;
+      --purple-dark: #1E1B4B; --blue-light: #60A5FA; --blue-bright: #3B82F6;
+      --gold: #FF9800; --orange: #E53935;
+      --bg-primary: #FFFFFF; --bg-secondary: #F8F7FC; --bg-tertiary: #EDE9FE;
+      --text-primary: #1E1B4B; --text-secondary: #4C4A6A; --text-muted: #6B7280;
+      --border-light: #E5E4EB; --border-medium: #C4B5FD;
+      --success: #8B5CF6; --success-light: #EDE9FE;
+      --accent-gradient: linear-gradient(135deg, #5B8DEF 0%, #8B5CF6 50%, #A855F7 100%);
     }
     body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg-secondary); color: var(--text-primary); min-height: 100vh; }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     
-    .view { display: none; }
+    .view { display: none; padding-bottom: 100px; }
     .view.active { display: block; }
     
     .header { position: sticky; top: 0; z-index: 50; background: var(--bg-primary); border-bottom: 1px solid var(--border-light); padding: 16px 20px; box-shadow: 0 2px 12px rgba(13,27,42,0.06); }
     .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
     .header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em; color: var(--purple-dark); }
     .header .subtitle { font-size: 0.8125rem; color: var(--text-muted); margin-top: 4px; font-weight: 500; }
-    .status-badge { display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(46,125,50,0.1), rgba(30,58,95,0.1)); padding: 8px 14px; border-radius: 100px; }
+    .status-badge { display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(91,141,239,0.15)); padding: 8px 14px; border-radius: 100px; }
     .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--purple-bright); animation: pulse 2s infinite; }
     
     /* Simulation Controls */
@@ -46,11 +48,11 @@
     .status-badge.transit .status-dot { background: #2196F3; }
     .status-badge.transit .status-text { color: #1565C0; }
     .status-badge.working { background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2)); }
-    .status-badge.working .status-dot { background: var(--purple-bright); }
-    .status-badge.working .status-text { color: var(--purple-dark); }
-    .status-badge.pickup { background: linear-gradient(135deg, rgba(46, 125, 50, 0.2), rgba(76, 175, 80, 0.2)); }
-    .status-badge.pickup .status-dot { background: #2E7D32; }
-    .status-badge.pickup .status-text { color: #1B5E20; }
+    .status-badge.working .status-dot { background: var(--purple-medium); }
+    .status-badge.working .status-text { color: var(--purple-deep); }
+    .status-badge.pickup { background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(91, 141, 239, 0.2)); }
+    .status-badge.pickup .status-dot { background: #8B5CF6; }
+    .status-badge.pickup .status-text { color: #6D28D9; }
     
     /* Sticky header during simulation */
     /* During simulation, just ensure scroll resets and header stays sticky */
@@ -75,7 +77,7 @@
     .day-tabs { display: flex; gap: 8px; overflow-x: auto; padding: 0 4px 4px; }
     .day-tab { flex-shrink: 0; padding: 12px 24px; border-radius: 12px; font-size: 0.9375rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.25s ease; background: var(--bg-tertiary); color: var(--text-secondary); }
     .day-tab:hover { background: var(--border-medium); }
-    .day-tab.active { background: linear-gradient(135deg, var(--purple-bright), var(--purple-deep)); color: white; box-shadow: 0 4px 14px rgba(46,125,50,0.35); }
+    .day-tab.active { background: var(--accent-gradient); color: white; box-shadow: 0 4px 14px rgba(139,92,246,0.35); }
     
     .view-toggle-container { padding: 20px; }
     .view-toggle { display: flex; background: var(--bg-primary); border-radius: 14px; padding: 6px; box-shadow: 0 2px 8px rgba(13,27,42,0.08); border: 1px solid var(--border-light); }
@@ -97,8 +99,8 @@
     .work-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(13,27,42,0.12); }
     .work-card.critical { border-left-color: var(--orange); background: linear-gradient(135deg, rgba(229,57,53,0.08), var(--bg-primary)); }
     .work-card.preventative { border-left-color: var(--gold); background: linear-gradient(135deg, rgba(255,152,0,0.08), var(--bg-primary)); }
-    .work-card.standard { border-left-color: var(--blue-light); background: linear-gradient(135deg, rgba(77,166,255,0.1), var(--bg-primary)); }
-    .work-card.pickup { border-left-color: var(--purple-bright); background: linear-gradient(135deg, rgba(46,125,50,0.08), var(--bg-primary)); }
+    .work-card.standard { border-left-color: var(--purple-bright); background: linear-gradient(135deg, rgba(139,92,246,0.08), var(--bg-primary)); }
+    .work-card.pickup { border-left-color: var(--purple-bright); background: linear-gradient(135deg, rgba(139,92,246,0.08), var(--bg-primary)); }
     .work-card.completed { opacity: 0.6; border-left-color: var(--success); background: linear-gradient(135deg, rgba(16,185,129,0.08), var(--bg-primary)); }
     
     .card-header { display: flex; align-items: flex-start; justify-content: space-between; cursor: pointer; }
@@ -128,7 +130,7 @@
     .history-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
     .sentiment-badge { font-size: 0.6875rem; padding: 3px 8px; border-radius: 4px; font-weight: 600; margin-left: auto; }
     .sentiment-badge.frustrated { background: rgba(229, 57, 53, 0.12); color: #C62828; }
-    .sentiment-badge.happy { background: rgba(46, 125, 50, 0.12); color: var(--purple-bright); }
+    .sentiment-badge.happy { background: rgba(139, 92, 246, 0.12); color: var(--purple-bright); }
     .history-details { display: flex; flex-direction: column; gap: 8px; }
     .history-row { display: flex; gap: 8px; font-size: 0.8125rem; line-height: 1.4; }
     .history-row.notes, .history-row.instructions { flex-direction: column; gap: 4px; }
@@ -151,10 +153,10 @@
     .detail-diagram { padding: 0; background: #FAFAFA; }
     .detail-diagram svg { display: block; width: 100%; height: auto; }
     
-    .arrive-btn { width: 100%; padding: 14px 20px; border-radius: 12px; font-size: 1rem; font-weight: 700; border: none; cursor: pointer; transition: all 0.25s ease; background: linear-gradient(135deg, var(--purple-bright), var(--purple-deep)); color: white; box-shadow: 0 4px 14px rgba(46,125,50,0.35); display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 16px; }
-    .arrive-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(46,125,50,0.45); }
+    .arrive-btn { width: 100%; padding: 14px 20px; border-radius: 12px; font-size: 1rem; font-weight: 700; border: none; cursor: pointer; transition: all 0.25s ease; background: var(--accent-gradient); color: white; box-shadow: 0 4px 14px rgba(139,92,246,0.35); display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 16px; }
+    .arrive-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(139,92,246,0.45); }
     .arrive-btn:active { transform: translateY(0); }
-    .arrive-btn.completed { background: var(--success); box-shadow: 0 4px 14px rgba(16,185,129,0.35); cursor: default; }
+    .arrive-btn.completed { background: var(--purple-bright); box-shadow: 0 4px 14px rgba(139,92,246,0.35); cursor: default; }
     
     .legend { margin-top: 24px; padding: 20px; background: var(--bg-primary); border-radius: 16px; box-shadow: 0 2px 8px rgba(13,27,42,0.06); border: 1px solid var(--border-light); }
     .legend h3 { font-family: 'Space Grotesk', sans-serif; font-size: 0.8125rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 16px; }
@@ -163,10 +165,157 @@
     .legend-dot { width: 14px; height: 14px; border-radius: 6px; }
     .legend-dot.orange { background: var(--orange); }
     .legend-dot.gold { background: var(--gold); }
-    .legend-dot.blue { background: var(--blue-light); }
+    .legend-dot.blue { background: var(--purple-bright); }
     .legend-dot.purple { background: var(--purple-bright); }
     
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-primary); border-top: 1px solid var(--border-light); padding: 12px 24px; padding-bottom: max(12px, env(safe-area-inset-bottom)); box-shadow: 0 -4px 20px rgba(13,27,42,0.08); z-index: 100; }
+    
+    /* Home Navigation Footer */
+    .home-nav-footer { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e5e7eb; padding: 12px 16px; padding-bottom: max(12px, env(safe-area-inset-bottom)); display: flex; justify-content: space-around; z-index: 1000; }
+    .home-nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: none; cursor: pointer; color: #6b7280; padding: 8px 16px; font-size: 0.75rem; font-weight: 500; }
+    .home-nav-item svg { width: 24px; height: 24px; }
+    .home-nav-item.active { color: var(--purple-bright); }
+    .home-nav-item:hover:not(.disabled) { color: var(--purple-bright); }
+    .home-nav-item.disabled { pointer-events: none; cursor: default; }
+    
+    /* Nearby Work Modal Styles */
+    .remaining-time-banner { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(168,85,247,0.1)); border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(139,92,246,0.2); }
+    .remaining-time-icon { font-size: 1.5rem; }
+    .remaining-time-info { flex: 1; }
+    .remaining-time-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; }
+    .remaining-time-value { font-size: 1.125rem; font-weight: 700; color: var(--purple-dark); }
+    
+    .nearby-section { margin-bottom: 16px; }
+    .nearby-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .nearby-section-title { font-size: 0.875rem; font-weight: 700; color: var(--text-primary); }
+    .nearby-section-count { font-size: 0.75rem; color: var(--text-muted); background: var(--bg-tertiary); padding: 4px 10px; border-radius: 12px; }
+    
+    .nearby-filter-bar { margin-bottom: 12px; }
+    .nearby-filter-bar .form-input { font-size: 0.875rem; padding: 10px 14px; }
+    
+    .nearby-work-list { display: flex; flex-direction: column; gap: 12px; max-height: 300px; overflow-y: auto; }
+    .nearby-work-card { background: white; border: 1px solid var(--border-light); border-radius: 12px; padding: 14px; cursor: pointer; transition: all 0.2s; }
+    .nearby-work-card:hover { border-color: var(--purple-bright); box-shadow: 0 4px 12px rgba(139,92,246,0.15); }
+    .nearby-work-card.no-fit-time { opacity: 0.7; }
+    
+    .nearby-work-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .nearby-work-type { font-size: 0.6875rem; font-weight: 600; padding: 4px 10px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.02em; }
+    .nearby-work-distance { font-size: 0.8125rem; font-weight: 600; color: var(--purple-dark); }
+    
+    .nearby-work-address { font-size: 0.9375rem; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+    
+    .nearby-work-meta { display: flex; gap: 12px; margin-bottom: 8px; }
+    .nearby-work-duration { font-size: 0.75rem; font-weight: 600; padding: 3px 8px; border-radius: 4px; }
+    .nearby-work-duration.fits { background: #DCFCE7; color: #16A34A; }
+    .nearby-work-duration.no-fit { background: #FEE2E2; color: #DC2626; }
+    .nearby-work-wo { font-size: 0.75rem; color: var(--text-muted); }
+    
+    .nearby-work-skills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+    .skill-match { font-size: 0.6875rem; padding: 3px 8px; background: #DCFCE7; color: #16A34A; border-radius: 4px; font-weight: 500; }
+    .skill-missing { font-size: 0.6875rem; color: var(--text-muted); font-style: italic; }
+    
+    .nearby-work-notes { font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    
+    .nearby-work-add { font-size: 0.8125rem; font-weight: 600; color: var(--purple-dark); text-align: center; padding: 8px; background: rgba(139,92,246,0.1); border-radius: 8px; }
+    .nearby-work-add.disabled { background: var(--bg-tertiary); color: var(--text-muted); }
+    
+    .nearby-show-more { text-align: center; padding: 12px; font-size: 0.8125rem; font-weight: 600; color: var(--purple-dark); cursor: pointer; }
+    .nearby-show-more:hover { text-decoration: underline; }
+    
+    .no-fitting-work { text-align: center; padding: 24px; color: var(--text-muted); font-size: 0.875rem; }
+    
+    /* Custom App Alert/Confirm Styles */
+    .app-alert-modal { background: white; border-radius: 16px; padding: 24px; max-width: 320px; width: 90%; margin: auto; box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
+    .app-alert-title { font-size: 1.125rem; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
+    .app-alert-message { font-size: 0.9375rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 20px; white-space: pre-line; }
+    .app-alert-buttons { display: flex; gap: 12px; justify-content: flex-end; }
+    .app-alert-btn { padding: 10px 20px; border-radius: 10px; font-size: 0.9375rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; }
+    .app-alert-btn.primary { background: var(--purple-dark); color: white; }
+    .app-alert-btn.primary:hover { background: var(--purple-deep); }
+    .app-alert-btn.secondary { background: var(--bg-tertiary); color: var(--text-secondary); }
+    .app-alert-btn.secondary:hover { background: var(--border-light); }
+    
+    /* Profile View Styles */
+    .profile-header { background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple-deep) 100%); padding: 40px 20px 30px; color: white; text-align: center; }
+    .profile-avatar { width: 100px; height: 100px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 2.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+    .profile-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+    .profile-role { font-size: 0.9375rem; opacity: 0.85; }
+    .profile-status-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px; margin-top: 16px; font-size: 0.875rem; font-weight: 600; }
+    .profile-status-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .profile-status-dot.on-duty { background: #4ade80; box-shadow: 0 0 8px #4ade80; }
+    .profile-status-dot.off-duty { background: #9ca3af; }
+    
+    .profile-content { padding: 20px; }
+    .profile-section { background: var(--bg-primary); border-radius: 16px; padding: 20px; margin-bottom: 16px; border: 1px solid var(--border-light); }
+    .profile-section-title { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
+    .profile-info-row { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border-light); }
+    .profile-info-row:last-child { border-bottom: none; }
+    .profile-info-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--bg-tertiary); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
+    .profile-info-content { flex: 1; }
+    .profile-info-label { font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 2px; }
+    .profile-info-value { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
+    
+    .profile-skills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .profile-skill-tag { background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(91,141,239,0.1)); color: var(--purple-dark); padding: 8px 14px; border-radius: 20px; font-size: 0.8125rem; font-weight: 600; }
+    
+    .profile-clock-section { display: flex; flex-direction: column; gap: 12px; }
+    .profile-clock-btn { width: 100%; padding: 16px; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.2s ease; }
+    .profile-clock-btn.clock-in { background: var(--purple-dark); color: white; border: none; }
+    .profile-clock-btn.clock-in:hover { background: var(--purple-deep); }
+    .profile-clock-btn.join-crew { background: white; color: var(--purple-dark); border: 2px solid var(--purple-bright); }
+    .profile-clock-btn.join-crew:hover { background: rgba(139,92,246,0.05); }
+    .profile-clock-btn.clock-out { background: white; color: #dc2626; border: 2px solid #dc2626; }
+    .profile-clock-btn.clock-out:hover { background: rgba(220,38,38,0.05); }
+    .profile-clock-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    
+    .profile-crew-info { background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(91,141,239,0.05)); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+    .profile-crew-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; }
+    .profile-crew-name { font-size: 1rem; font-weight: 700; color: var(--purple-dark); }
+    .profile-crew-members { font-size: 0.8125rem; color: var(--text-secondary); margin-top: 4px; }
+    
+    .profile-time-info { display: flex; justify-content: space-between; padding: 12px 16px; background: var(--bg-tertiary); border-radius: 10px; margin-top: 12px; }
+    .profile-time-block { text-align: center; }
+    .profile-time-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 2px; }
+    .profile-time-value { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
+    
+    /* Assets View Styles */
+    .assets-header { background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple-deep) 100%); padding: 30px 20px 20px; color: white; }
+    .assets-header h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+    .assets-header-subtitle { font-size: 0.9375rem; opacity: 0.85; }
+    
+    .assets-content { padding: 20px; padding-bottom: 100px; }
+    .assets-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 24px; }
+    .assets-stat-card { background: white; border-radius: 12px; padding: 16px 12px; text-align: center; border: 1px solid var(--border-light); }
+    .assets-stat-value { font-size: 1.5rem; font-weight: 700; color: var(--purple-dark); }
+    .assets-stat-label { font-size: 0.6875rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px; }
+    
+    .assets-section-title { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+    
+    .asset-accordion-list { display: flex; flex-direction: column; gap: 12px; }
+    .asset-accordion { background: white; border-radius: 16px; border: 1px solid var(--border-light); overflow: hidden; }
+    .asset-accordion.open { border-color: var(--purple-bright); box-shadow: 0 4px 16px rgba(139,92,246,0.15); }
+    
+    .asset-accordion-header { display: flex; align-items: center; justify-content: space-between; padding: 16px; cursor: pointer; transition: background 0.2s; }
+    .asset-accordion-header:hover { background: var(--bg-tertiary); }
+    .asset-accordion-left { display: flex; align-items: center; gap: 12px; }
+    .asset-type-badge { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
+    .asset-accordion-info { }
+    .asset-accordion-title { font-weight: 600; color: var(--text-primary); font-size: 0.9375rem; }
+    .asset-accordion-subtitle { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+    .asset-accordion-arrow { color: var(--text-muted); font-size: 0.75rem; }
+    
+    .asset-accordion-content { padding: 0 16px 16px; }
+    .asset-diagram-full { margin-bottom: 16px; }
+    .asset-diagram-full .diagram-wrapper { background: var(--bg-tertiary); border-radius: 12px; padding: 8px; overflow-x: auto; }
+    .asset-diagram-full .diagram-header { margin-bottom: 8px; }
+    .asset-diagram-full .diagram-header h3 { font-size: 0.9375rem; font-weight: 600; color: var(--text-primary); }
+    .asset-details-row { display: flex; gap: 12px; margin-bottom: 12px; }
+    .asset-detail { flex: 1; background: var(--bg-tertiary); padding: 10px 12px; border-radius: 8px; }
+    .asset-detail-label { font-size: 0.6875rem; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 2px; }
+    .asset-detail-value { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); }
+    .asset-view-task-btn { width: 100%; padding: 12px; background: var(--purple-dark); color: white; border: none; border-radius: 10px; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .asset-view-task-btn:hover { background: var(--purple-deep); }
+    
     .nav-items { display: flex; justify-content: space-around; }
     .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; background: none; border: none; cursor: pointer; color: var(--text-muted); transition: all 0.2s ease; padding: 8px 16px; border-radius: 12px; }
     .nav-item:hover { background: var(--bg-tertiary); }
@@ -222,19 +371,19 @@
     
     .asset { cursor: pointer; transition: all 0.2s ease; }
     .asset:hover { filter: brightness(1.05); }
-    .asset-complete rect, .asset-complete circle { stroke: var(--purple-bright); fill: rgba(46, 125, 50, 0.12); }
+    .asset-complete rect, .asset-complete circle { stroke: var(--purple-bright); fill: rgba(139, 92, 246, 0.12); }
     .asset-partial rect, .asset-partial circle { stroke: var(--gold); fill: rgba(255, 152, 0, 0.12); }
     .asset-missing rect, .asset-missing circle { stroke: var(--orange); fill: rgba(229, 57, 53, 0.12); }
     .asset-work-target rect, .asset-work-target circle { stroke: #DC2626; stroke-width: 4; fill: rgba(220, 38, 38, 0.2); animation: pulse-red 1.5s ease-in-out infinite; }
     @keyframes pulse-red { 0%, 100% { fill: rgba(220, 38, 38, 0.2); } 50% { fill: rgba(220, 38, 38, 0.35); } }
-    .asset-complete:hover rect, .asset-complete:hover circle { fill: rgba(46, 125, 50, 0.25); }
+    .asset-complete:hover rect, .asset-complete:hover circle { fill: rgba(139, 92, 246, 0.25); }
     .asset-partial:hover rect, .asset-partial:hover circle { fill: rgba(255, 152, 0, 0.25); }
     .asset-missing:hover rect, .asset-missing:hover circle { fill: rgba(229, 57, 53, 0.25); }
     
     .diagram-legend { padding: 16px 20px; border-top: 1px solid var(--border-light); display: flex; gap: 24px; flex-wrap: wrap; }
     .diagram-legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.8125rem; color: var(--text-secondary); font-weight: 500; }
     .diagram-legend-dot { width: 12px; height: 12px; border-radius: 4px; border-width: 2px; border-style: solid; }
-    .diagram-legend-dot.complete { border-color: var(--purple-bright); background: rgba(46, 125, 50, 0.12); }
+    .diagram-legend-dot.complete { border-color: var(--purple-bright); background: rgba(139, 92, 246, 0.12); }
     .diagram-legend-dot.partial { border-color: var(--gold); background: rgba(255, 152, 0, 0.12); }
     .diagram-legend-dot.missing { border-color: var(--orange); background: rgba(229, 57, 53, 0.12); }
     
@@ -243,7 +392,7 @@
     .maintenance-section.active { display: block; }
     .maintenance-cta-row { display: flex; gap: 12px; margin-bottom: 16px; }
     .maintenance-cta { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 16px; background: var(--bg-primary); border: 2px solid var(--border-light); border-radius: 12px; font-size: 0.9375rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: all 0.2s ease; font-family: inherit; }
-    .maintenance-cta:hover { border-color: var(--purple-bright); background: rgba(46, 125, 50, 0.05); }
+    .maintenance-cta:hover { border-color: var(--purple-bright); background: rgba(139, 92, 246, 0.05); }
     .maintenance-cta.active { background: var(--purple-bright); border-color: var(--purple-bright); color: white; }
     
     .hidden { display: none !important; }
@@ -257,11 +406,11 @@
     .checklist-item:last-child { border-bottom: none; }
     .checklist-label { display: flex; align-items: center; gap: 14px; font-size: 1rem; font-weight: 500; color: var(--text-primary); }
     .check-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 700; }
-    .check-icon.complete { background: rgba(16, 185, 129, 0.15); color: #10B981; }
+    .check-icon.complete { background: rgba(139, 92, 246, 0.15); color: #8B5CF6; }
     .check-icon.missing { background: rgba(156, 163, 175, 0.2); color: #9CA3AF; }
     .upload-btn { padding: 10px 20px; border-radius: 10px; font-size: 0.875rem; font-weight: 600; border: 2px solid transparent; cursor: pointer; transition: all 0.2s ease; background: var(--purple-bright); color: white; display: flex; align-items: center; gap: 6px; min-width: 100px; justify-content: center; }
     .upload-btn:hover { background: var(--purple-deep); }
-    .upload-btn.uploaded { background: rgba(16, 185, 129, 0.12); color: #10B981; border: 2px solid rgba(16, 185, 129, 0.3); cursor: default; font-weight: 600; }
+    .upload-btn.uploaded { background: rgba(139, 92, 246, 0.12); color: #8B5CF6; border: 2px solid rgba(139, 92, 246, 0.3); cursor: default; font-weight: 600; }
     
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(13,27,42,0.5); align-items: flex-end; justify-content: center; z-index: 1000; }
     .modal-overlay.active { display: flex; }
@@ -280,7 +429,7 @@
     .btn-secondary:hover { background: var(--border-light); }
     
     .status-badge-modal { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-left: 10px; }
-    .status-badge-modal.complete { background: rgba(16, 185, 129, 0.15); color: #10B981; }
+    .status-badge-modal.complete { background: rgba(139, 92, 246, 0.15); color: #8B5CF6; }
     .status-badge-modal.partial { background: rgba(255, 152, 0, 0.15); color: #E65100; }
     .status-badge-modal.missing { background: rgba(229, 57, 53, 0.15); color: var(--orange); }
     
@@ -330,10 +479,10 @@
     .pickup-jobs-container { margin-top: 20px; display: flex; flex-direction: column; gap: 16px; }
     
     .pickup-job-group { background: var(--bg-primary); border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden; transition: all 0.2s ease; }
-    .pickup-job-group.complete { border-color: var(--success); background: rgba(46, 125, 50, 0.03); }
+    .pickup-job-group.complete { border-color: var(--success); background: rgba(139, 92, 246, 0.03); }
     
     .pickup-job-header { display: flex; align-items: center; padding: 14px 16px; cursor: pointer; background: var(--bg-tertiary); gap: 10px; }
-    .pickup-job-group.complete .pickup-job-header { background: rgba(46, 125, 50, 0.1); }
+    .pickup-job-group.complete .pickup-job-header { background: rgba(139, 92, 246, 0.1); }
     
     .pickup-job-checkbox { flex-shrink: 0; }
     .pickup-job-checkbox input[type="checkbox"] { width: 22px; height: 22px; cursor: pointer; accent-color: var(--purple-bright); }
@@ -355,7 +504,7 @@
     
     .pickup-part-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border-light); transition: all 0.2s ease; }
     .pickup-part-item:last-child { border-bottom: none; }
-    .pickup-part-item.picked { background: rgba(46, 125, 50, 0.08); }
+    .pickup-part-item.picked { background: rgba(139, 92, 246, 0.08); }
     .pickup-part-item.picked .pickup-part-name { text-decoration: line-through; color: var(--text-muted); }
     
     .pickup-part-checkbox { flex-shrink: 0; }
@@ -365,7 +514,7 @@
     .pickup-part-name { font-weight: 600; color: var(--text-primary); font-size: 0.875rem; margin-bottom: 2px; }
     .pickup-part-meta { display: flex; gap: 10px; align-items: center; }
     .pickup-part-number { font-size: 0.75rem; color: var(--text-muted); font-family: 'SF Mono', monospace; }
-    .pickup-part-qty { font-size: 0.75rem; font-weight: 700; color: var(--purple-bright); background: rgba(46, 125, 50, 0.1); padding: 2px 6px; border-radius: 4px; }
+    .pickup-part-qty { font-size: 0.75rem; font-weight: 700; color: var(--purple-bright); background: rgba(139, 92, 246, 0.1); padding: 2px 6px; border-radius: 4px; }
     
     .pickup-part-location { text-align: right; flex-shrink: 0; min-width: 70px; }
     .pickup-location-zone { font-size: 0.6875rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.02em; }
@@ -379,11 +528,11 @@
     .pickup-stat-label { display: block; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-top: 2px; }
     
     /* Scanner Modal Styles */
-    .scanner-current-part { background: linear-gradient(135deg, rgba(46,125,50,0.1), rgba(46,125,50,0.05)); border: 1px solid rgba(46,125,50,0.2); border-radius: 12px; padding: 16px; margin-bottom: 16px; text-align: center; }
+    .scanner-current-part { background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(139,92,246,0.05)); border: 1px solid rgba(139,92,246,0.2); border-radius: 12px; padding: 16px; margin-bottom: 16px; text-align: center; }
     .scanner-part-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
     .scanner-part-name { font-size: 1.125rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 8px; }
     .scanner-part-details { display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
-    .scanner-part-number { font-family: 'SF Mono', monospace; font-size: 1rem; font-weight: 600; color: var(--purple-bright); background: rgba(46,125,50,0.15); padding: 4px 10px; border-radius: 6px; }
+    .scanner-part-number { font-family: 'SF Mono', monospace; font-size: 1rem; font-weight: 600; color: var(--purple-bright); background: rgba(139,92,246,0.15); padding: 4px 10px; border-radius: 6px; }
     .scanner-part-qty { font-size: 0.875rem; font-weight: 700; color: var(--text-secondary); }
     .scanner-part-location { font-size: 0.875rem; font-weight: 600; color: #E65100; background: rgba(255,152,0,0.15); padding: 4px 10px; border-radius: 6px; }
     .scanner-part-job { font-size: 0.8125rem; color: var(--text-muted); margin-top: 4px; }
@@ -428,7 +577,7 @@
     .equipment-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .equipment-toggle { display: flex; align-items: center; gap: 12px; padding: 14px; background: var(--bg-primary); border-radius: 12px; box-shadow: 0 2px 8px rgba(13,27,42,0.06); border: 1px solid var(--border-light); cursor: pointer; transition: all 0.2s ease; }
     .equipment-toggle:hover { border-color: var(--purple-bright); }
-    .equipment-toggle.checked { background: rgba(46, 125, 50, 0.08); border-color: var(--purple-bright); }
+    .equipment-toggle.checked { background: rgba(139, 92, 246, 0.08); border-color: var(--purple-bright); }
     .equipment-checkbox { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border-medium); display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; flex-shrink: 0; }
     .equipment-toggle.checked .equipment-checkbox { background: var(--purple-bright); border-color: var(--purple-bright); color: white; }
     .equipment-label { font-size: 0.875rem; font-weight: 500; color: var(--text-primary); }
@@ -447,7 +596,7 @@
     .doc-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px 16px; background: var(--bg-tertiary); border: 2px solid var(--border-light); border-radius: 12px; cursor: pointer; transition: all 0.2s ease; min-height: 120px; }
     .doc-tile:hover { border-color: var(--purple-bright); background: rgba(139, 92, 246, 0.08); }
     .doc-tile:active { transform: scale(0.98); }
-    .doc-tile.captured { border-color: var(--success); background: rgba(46, 125, 50, 0.1); }
+    .doc-tile.captured { border-color: var(--success); background: rgba(139, 92, 246, 0.1); }
     .doc-tile.captured .doc-tile-icon { color: var(--success); }
     .doc-tile-icon { color: var(--purple-dark); margin-bottom: 12px; }
     .doc-tile-icon svg { width: 32px; height: 32px; }
@@ -467,7 +616,7 @@
     .parts-checklist { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
     .part-check-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--bg-tertiary); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
     .part-check-item:hover { background: rgba(139, 92, 246, 0.08); }
-    .part-check-item.checked { background: rgba(46, 125, 50, 0.1); }
+    .part-check-item.checked { background: rgba(139, 92, 246, 0.1); }
     .part-check-item.checked .part-check-name { text-decoration: line-through; color: var(--text-muted); }
     .part-checkbox { width: 22px; height: 22px; border: 2px solid var(--border-medium); border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s ease; }
     .part-check-item.checked .part-checkbox { background: var(--success); border-color: var(--success); color: white; }
@@ -562,7 +711,7 @@
     .avail-desc { font-size: 0.875rem; color: var(--text-secondary); }
     .avail-meta { font-size: 0.8125rem; color: var(--text-muted); margin-top: 2px; }
     .avail-badge { display: inline-block; font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 6px; margin-top: 8px; }
-    .avail-badge.in-stock { background: rgba(46, 125, 50, 0.15); color: #2E7D32; }
+    .avail-badge.in-stock { background: rgba(139, 92, 246, 0.15); color: #7C3AED; }
     .avail-badge.out-of-stock { background: rgba(229, 57, 53, 0.15); color: #C62828; }
     .avail-badge.na { background: rgba(158, 158, 158, 0.15); color: #757575; }
     .avail-badge.price { background: rgba(139, 92, 246, 0.15); color: var(--purple-dark); }
@@ -610,10 +759,75 @@
     /* Repair Insights Styles */
     .insights-content { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
     .insight-card { display: flex; gap: 14px; padding: 16px; background: var(--bg-tertiary); border-radius: 12px; border: 1px solid var(--border-light); }
+    .insight-card.highlight { background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(91,141,239,0.08)); border-color: rgba(139,92,246,0.3); }
     .insight-icon { font-size: 1.5rem; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: var(--bg-primary); border-radius: 10px; flex-shrink: 0; }
     .insight-text { flex: 1; min-width: 0; }
     .insight-title { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
     .insight-desc { font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.5; }
+    
+    /* Resolve Processing State */
+    .resolve-processing { padding: 40px 20px; text-align: center; }
+    .resolve-processing.hidden { display: none; }
+    .resolve-insights-container.hidden { display: none; }
+    .processing-animation { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .processing-spinner { width: 48px; height: 48px; border: 4px solid var(--border-light); border-top-color: var(--purple-bright); border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .processing-text { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
+    .processing-subtext { font-size: 0.875rem; color: var(--text-muted); }
+    
+    /* Follow-up Questions */
+    .followup-questions { display: flex; flex-direction: column; gap: 12px; }
+    .followup-question { background: var(--bg-tertiary); border-radius: 12px; padding: 16px; border: 1px solid var(--border-light); }
+    .followup-question-label { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .followup-question-input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-medium); font-size: 0.9375rem; }
+    .followup-question-input:focus { outline: none; border-color: var(--purple-bright); }
+    .followup-submit-btn { margin-top: 12px; width: 100%; padding: 14px; background: var(--purple-dark); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+    
+    /* Resolve Steps */
+    .resolve-steps-section { margin: 16px 0; }
+    .resolve-steps-header { padding: 0 16px; margin-bottom: 12px; }
+    .resolve-steps-header h4 { font-size: 0.9375rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+    .resolve-steps-list { display: flex; flex-direction: column; gap: 8px; padding: 0 16px; }
+    .resolve-step { display: flex; align-items: flex-start; gap: 14px; padding: 14px 16px; background: var(--bg-tertiary); border-radius: 12px; border: 1px solid var(--border-light); }
+    .resolve-step.safety { background: linear-gradient(135deg, rgba(229, 57, 53, 0.08), rgba(255, 152, 0, 0.05)); border-color: rgba(229, 57, 53, 0.2); }
+    .resolve-step-number { width: 32px; height: 32px; border-radius: 50%; background: var(--purple-bright); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; font-weight: 700; flex-shrink: 0; }
+    .resolve-step.safety .resolve-step-number { background: #E53935; }
+    .resolve-step-text { flex: 1; font-size: 0.9375rem; color: var(--text-primary); line-height: 1.5; padding-top: 4px; }
+    .resolve-step-safety-badge { display: inline-flex; align-items: center; gap: 4px; background: rgba(229, 57, 53, 0.12); color: #C62828; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-left: 8px; }
+    
+    /* Resolve Parts Section */
+    .resolve-parts-section { margin: 16px; padding: 16px; background: var(--bg-primary); border-radius: 12px; border: 1px solid var(--border-light); }
+    .resolve-parts-header { margin-bottom: 12px; }
+    .resolve-parts-header h4 { font-size: 0.9375rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+    
+    /* Part Search */
+    .part-search-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--border-light); cursor: pointer; transition: background 0.2s ease; }
+    .part-search-item:hover { background: rgba(139, 92, 246, 0.06); }
+    .part-search-info { flex: 1; }
+    .part-search-name { font-size: 0.9375rem; font-weight: 500; color: var(--text-primary); }
+    .part-search-number { font-size: 0.75rem; color: var(--text-muted); font-family: 'SF Mono', monospace; }
+    .part-search-add { font-size: 0.875rem; font-weight: 600; color: var(--purple-bright); }
+    
+    /* Video Library */
+    .video-library-subtitle { font-size: 0.8125rem; color: var(--text-muted); margin-top: 4px; font-weight: 400; }
+    .video-library-content { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+    .video-card { background: var(--bg-primary); border-radius: 16px; overflow: hidden; border: 1px solid var(--border-light); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .video-thumbnail { position: relative; background: #1a1a1a; height: 200px; display: flex; align-items: center; justify-content: center; }
+    .video-rec-badge { position: absolute; top: 12px; left: 12px; display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.6); padding: 6px 10px; border-radius: 6px; }
+    .video-rec-dot { width: 10px; height: 10px; background: #E53935; border-radius: 50%; animation: pulse-rec 1.5s infinite; }
+    @keyframes pulse-rec { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .video-rec-text { color: white; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; }
+    .video-duration { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.6); color: white; padding: 6px 10px; border-radius: 6px; font-size: 0.875rem; font-weight: 600; font-family: 'SF Mono', monospace; }
+    .video-play-btn { width: 64px; height: 64px; background: rgba(255,255,255,0.95); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+    .video-play-btn:hover { transform: scale(1.1); }
+    .video-play-btn svg { margin-left: 4px; color: var(--purple-bright); }
+    .video-info { padding: 16px; }
+    .video-title { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+    .video-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .video-meta-duration { background: var(--bg-tertiary); padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); }
+    .video-meta-author { display: flex; align-items: center; gap: 6px; font-size: 0.8125rem; color: var(--text-secondary); }
+    .video-meta-author-icon { width: 20px; height: 20px; background: var(--bg-tertiary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.6875rem; }
+    .video-meta-badge { background: rgba(139, 92, 246, 0.12); color: var(--purple-bright); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
     
     .history-timeline { padding: 16px; }
     .timeline-item { display: flex; gap: 14px; padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--border-light); }
@@ -625,9 +839,35 @@
     .timeline-action { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
     .timeline-tech { font-size: 0.8125rem; color: var(--text-muted); }
     .timeline-notes { font-size: 0.8125rem; color: var(--text-secondary); margin-top: 6px; font-style: italic; }
+    
+    /* Cover Screen Styles */
+    .cover-screen { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s ease; }
+    .cover-screen.hidden { opacity: 0; pointer-events: none; display: none; }
+    .cover-background { position: absolute; inset: 0; background: #1a1a1a; }
+    .cover-dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px); background-size: 24px 24px; }
+    .cover-content { position: relative; z-index: 1; text-align: center; padding: 40px; }
+    .cover-brand { font-family: 'Space Grotesk', monospace; font-size: 1.5rem; font-weight: 500; color: rgba(255,255,255,0.6); letter-spacing: 0.15em; margin-bottom: 24px; }
+    .cover-title { font-family: 'DM Sans', sans-serif; font-size: 2.5rem; font-weight: 600; color: white; margin-bottom: 40px; letter-spacing: -0.02em; }
+    .cover-btn { width: 280px; padding: 18px 40px; font-size: 1.125rem; font-weight: 600; font-family: inherit; color: white; background: linear-gradient(135deg, #5B8DEF 0%, #8B5CF6 50%, #A855F7 100%); border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4); }
+    .cover-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(139, 92, 246, 0.5); }
+    .cover-btn:active { transform: translateY(-1px); }
+    .cover-tagline { margin-top: 32px; font-size: 0.9375rem; color: rgba(255,255,255,0.4); font-weight: 400; }
   </style>
 </head>
 <body>
+  <!-- COVER SCREEN -->
+  <div class="cover-screen" id="coverScreen">
+    <div class="cover-background">
+      <div class="cover-dots"></div>
+    </div>
+    <div class="cover-content">
+      <div class="cover-brand">NexusBlack</div>
+      <h1 class="cover-title">Resolve</h1>
+      <button class="cover-btn" onclick="document.getElementById('coverScreen').style.display='none';">Launch</button>
+      <p class="cover-tagline">Utility Work Planning and Guidance</p>
+    </div>
+  </div>
+
   <!-- WORK PLAN VIEW -->
   <div class="view active" id="workPlanView">
     <div class="header">
@@ -699,6 +939,244 @@
         </div>
       </div>
     </div>
+    
+    <!-- Home Navigation Footer -->
+    <nav class="home-nav-footer">
+      <button class="home-nav-item active">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <span>My Plan</span>
+      </button>
+      <button class="home-nav-item disabled">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span>My Assets</span>
+      </button>
+      <button class="home-nav-item disabled">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+          <path d="M22 6L12 13L2 6"></path>
+        </svg>
+        <span>Messages</span>
+      </button>
+      <button class="home-nav-item" onclick="showProfile()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="8" r="4"></circle>
+          <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+        </svg>
+        <span>Profile</span>
+      </button>
+    </nav>
+  </div>
+  
+  <!-- ASSETS VIEW -->
+  <div class="view" id="assetsView">
+    <div class="assets-header">
+      <button class="back-btn" onclick="showWorkPlan()" style="color: white; position: absolute; left: 20px; top: 20px;">← Back</button>
+      <h1>📊 My Assets</h1>
+      <div class="assets-header-subtitle">Asset diagrams for this week's work</div>
+    </div>
+    
+    <div class="assets-content" id="assetsContent">
+      <!-- Populated by renderAssetsView() -->
+    </div>
+    
+    <!-- Assets Footer Nav -->
+    <nav class="home-nav-footer">
+      <button class="home-nav-item" onclick="showWorkPlan()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <span>My Plan</span>
+      </button>
+      <button class="home-nav-item active">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span>My Assets</span>
+      </button>
+      <button class="home-nav-item" onclick="showMessages()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+          <path d="M22 6L12 13L2 6"></path>
+        </svg>
+        <span>Messages</span>
+      </button>
+      <button class="home-nav-item" onclick="showProfile()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="8" r="4"></circle>
+          <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+        </svg>
+        <span>Profile</span>
+      </button>
+    </nav>
+  </div>
+  
+  <!-- PROFILE VIEW -->
+  <div class="view" id="profileView">
+    <div class="profile-header">
+      <button class="back-btn" onclick="showWorkPlan()" style="color: white; position: absolute; left: 20px; top: 20px;">← Back</button>
+      <div class="profile-avatar">👷</div>
+      <div class="profile-name">Marcus Johnson</div>
+      <div class="profile-role">Senior Field Technician</div>
+      <div class="profile-status-badge" id="profileStatusBadge">
+        <div class="profile-status-dot on-duty" id="profileStatusDot"></div>
+        <span id="profileStatusText">On Duty</span>
+      </div>
+    </div>
+    
+    <div class="profile-content">
+      <!-- Personal Info -->
+      <div class="profile-section">
+        <div class="profile-section-title">Personal Information</div>
+        <div class="profile-info-row">
+          <div class="profile-info-icon">🏠</div>
+          <div class="profile-info-content">
+            <div class="profile-info-label">Home Location</div>
+            <div class="profile-info-value">San Jose Service Center</div>
+          </div>
+        </div>
+        <div class="profile-info-row">
+          <div class="profile-info-icon">📧</div>
+          <div class="profile-info-content">
+            <div class="profile-info-label">Email</div>
+            <div class="profile-info-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="97fab9fdf8fff9e4f8f9d7e4e1f0f2b9f4f8fa">[email&#160;protected]</a></div>
+          </div>
+        </div>
+        <div class="profile-info-row">
+          <div class="profile-info-icon">📱</div>
+          <div class="profile-info-content">
+            <div class="profile-info-label">Phone</div>
+            <div class="profile-info-value">(408) 555-0147</div>
+          </div>
+        </div>
+        <div class="profile-info-row">
+          <div class="profile-info-icon">🆔</div>
+          <div class="profile-info-content">
+            <div class="profile-info-label">Employee ID</div>
+            <div class="profile-info-value">SVGE-4821</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Skills & Certifications -->
+      <div class="profile-section">
+        <div class="profile-section-title">Skills & Certifications</div>
+        <div class="profile-skills">
+          <span class="profile-skill-tag">Gas Leak Detection</span>
+          <span class="profile-skill-tag">Meter Installation</span>
+          <span class="profile-skill-tag">Pipeline Repair</span>
+          <span class="profile-skill-tag">Regulator Service</span>
+          <span class="profile-skill-tag">OQ Certified</span>
+          <span class="profile-skill-tag">CDL Class B</span>
+          <span class="profile-skill-tag">Confined Space</span>
+          <span class="profile-skill-tag">First Aid/CPR</span>
+        </div>
+      </div>
+      
+      <!-- Clock In / Crew -->
+      <div class="profile-section">
+        <div class="profile-section-title">Work Status</div>
+        
+        <div id="crewInfoSection" class="profile-crew-info" style="display: none;">
+          <div class="profile-crew-label">Current Crew</div>
+          <div class="profile-crew-name" id="crewName">Crew Alpha-7</div>
+          <div class="profile-crew-members" id="crewMembers">With: J. Martinez, R. Chen</div>
+        </div>
+        
+        <div class="profile-clock-section">
+          <button class="profile-clock-btn clock-in" id="clockInBtn" onclick="clockIn()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            Clock In
+          </button>
+          <button class="profile-clock-btn join-crew" id="joinCrewBtn" onclick="showJoinCrewModal()" style="display: none;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            Join a Crew
+          </button>
+          <button class="profile-clock-btn clock-out" id="clockOutBtn" onclick="clockOut()" style="display: none;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            Clock Out
+          </button>
+        </div>
+        
+        <div class="profile-time-info" id="timeInfoSection" style="display: none;">
+          <div class="profile-time-block">
+            <div class="profile-time-label">Clocked In</div>
+            <div class="profile-time-value" id="clockInTime">8:00 AM</div>
+          </div>
+          <div class="profile-time-block">
+            <div class="profile-time-label">Hours Today</div>
+            <div class="profile-time-value" id="hoursToday">0.0h</div>
+          </div>
+          <div class="profile-time-block">
+            <div class="profile-time-label">Hours This Week</div>
+            <div class="profile-time-value" id="hoursWeek">32.5h</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Profile Footer Nav -->
+    <nav class="home-nav-footer">
+      <button class="home-nav-item" onclick="showWorkPlan()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <span>My Plan</span>
+      </button>
+      <button class="home-nav-item disabled">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span>My Assets</span>
+      </button>
+      <button class="home-nav-item disabled">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+          <path d="M22 6L12 13L2 6"></path>
+        </svg>
+        <span>Messages</span>
+      </button>
+      <button class="home-nav-item active">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="8" r="4"></circle>
+          <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+        </svg>
+        <span>Profile</span>
+      </button>
+    </nav>
   </div>
   
   <!-- TASK DETAIL VIEW -->
@@ -730,7 +1208,7 @@
     
     <div class="task-tabs" id="taskTabs">
       <button class="task-tab active" data-tab="completeWork"><span class="tab-icon">🔧</span> Complete Work</button>
-      <button class="task-tab" data-tab="repairInsights"><span class="tab-icon">💡</span> Repair Insights</button>
+      <button class="task-tab" data-tab="repairInsights"><span class="tab-icon">🔧</span> Resolve Issue</button>
     </div>
     
     <div class="task-content">
@@ -883,56 +1361,222 @@
             </svg>
             Save / Pause
           </button>
-          <button class="complete-action-btn primary" onclick="saveAndCompleteWork()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-            Complete Work
-          </button>
-          <button class="complete-action-btn secondary full-width" onclick="showCreateWorkOrderModal()">
+          <button class="complete-action-btn secondary" onclick="showCreateWorkOrderModal()">
             <span>+</span> Create New Work Order
           </button>
         </div>
       </div>
       
       <div class="tab-content hidden" id="repairInsightsTab">
-        <div class="diagram-section">
-          <div class="diagram-header"><h3>AI-Powered Insights</h3></div>
-          <div class="insights-content" id="insightsContent">
-            <div class="insight-card">
-              <div class="insight-icon">💡</div>
-              <div class="insight-text">
-                <div class="insight-title">Recommended Approach</div>
-                <div class="insight-desc" id="recommendedApproach">Loading insights based on work order...</div>
+        <div class="work-section">
+          <div class="section-header">
+            <h3>Document the Issue</h3>
+            <p class="section-subtitle">Capture evidence of the problem</p>
+          </div>
+          <div class="doc-grid">
+            <button class="doc-tile" onclick="scanAssetTagResolve()" id="tileAssetTagResolve">
+              <div class="doc-tile-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="7" y1="8" x2="17" y2="8"></line>
+                  <line x1="7" y1="12" x2="17" y2="12"></line>
+                  <line x1="7" y1="16" x2="13" y2="16"></line>
+                </svg>
               </div>
-            </div>
-            <div class="insight-card">
-              <div class="insight-icon">⚠️</div>
-              <div class="insight-text">
-                <div class="insight-title">Common Issues</div>
-                <div class="insight-desc" id="commonIssues">Analyzing similar past repairs...</div>
+              <span class="doc-tile-label">Scan Asset Tag</span>
+            </button>
+            <button class="doc-tile" onclick="captureVideoResolve()" id="tileVideoResolve">
+              <div class="doc-tile-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="6" width="14" height="12" rx="2" ry="2"></rect>
+                  <polygon points="22,8 16,12 22,16"></polygon>
+                </svg>
               </div>
-            </div>
-            <div class="insight-card">
-              <div class="insight-icon">🔧</div>
-              <div class="insight-text">
-                <div class="insight-title">Parts Often Needed</div>
-                <div class="insight-desc" id="partsNeeded">Checking inventory recommendations...</div>
+              <span class="doc-tile-label">Capture Video</span>
+            </button>
+            <button class="doc-tile" onclick="takePhotoResolve()" id="tilePhotoResolve">
+              <div class="doc-tile-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                  <circle cx="12" cy="13" r="4"></circle>
+                </svg>
               </div>
-            </div>
-            <div class="insight-card">
-              <div class="insight-icon">⏱️</div>
-              <div class="insight-text">
-                <div class="insight-title">Estimated Time</div>
-                <div class="insight-desc" id="estimatedTime">Calculating based on similar jobs...</div>
+              <span class="doc-tile-label">Take Photo</span>
+            </button>
+            <button class="doc-tile" onclick="recordAudioResolve()" id="tileAudioResolve">
+              <div class="doc-tile-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                  <line x1="12" y1="19" x2="12" y2="23"></line>
+                  <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
               </div>
-            </div>
+              <span class="doc-tile-label">Record Audio</span>
+            </button>
           </div>
         </div>
         
-        <div class="diagram-section" style="margin-top: 16px;">
+        <div class="section-divider"></div>
+        
+        <div class="work-section">
+          <div class="section-header">
+            <h3>Describe the Issue</h3>
+          </div>
+          <div class="describe-input-row">
+            <input type="text" class="describe-input" id="resolveIssueDescriptionInput" placeholder="Describe what you observe..." onkeypress="if(event.key==='Enter')submitIssueDescription()">
+            <button class="voice-btn" onclick="submitIssueDescription()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Processing State -->
+        <div class="resolve-processing hidden" id="resolveProcessing">
+          <div class="processing-animation">
+            <div class="processing-spinner"></div>
+            <div class="processing-text">Analyzing issue documentation...</div>
+            <div class="processing-subtext" id="processingSubtext">Processing video footage</div>
+          </div>
+        </div>
+        
+        <!-- AI Insights (hidden until documentation captured) -->
+        <div class="resolve-insights-container hidden" id="resolveInsightsContainer">
+          <div class="section-divider"></div>
+          
+          <!-- Follow-up Questions (shown conditionally) -->
+          <div class="work-section hidden" id="resolveFollowupSection" style="margin-bottom: 16px;">
+            <div class="section-header">
+              <h3>📋 Additional Information Needed</h3>
+              <p class="section-subtitle">Please provide these details for accurate guidance</p>
+            </div>
+            <div class="followup-questions" id="followupQuestions"></div>
+          </div>
+          
+          <div class="diagram-section" id="resolveInsightsSection" style="margin-top: 0;">
+            <div class="diagram-header"><h3>🤖 AI-Powered Resolution Guidance</h3></div>
+            <div class="insights-content" id="resolveInsightsContent">
+              <div class="insight-card highlight">
+                <div class="insight-icon">🎯</div>
+                <div class="insight-text">
+                  <div class="insight-title">Issue Analysis</div>
+                  <div class="insight-desc" id="resolveIssueAnalysis">Analyzing captured documentation...</div>
+                </div>
+              </div>
+              
+              <!-- Recommended Steps (replaces old format) -->
+              <div class="resolve-steps-section">
+                <div class="resolve-steps-header">
+                  <h4>Recommended Steps</h4>
+                </div>
+                <div class="resolve-steps-list" id="resolveStepsList">
+                  <!-- Steps populated dynamically -->
+                </div>
+              </div>
+              
+              <!-- Parts & Tools Section (Checkable) -->
+              <div class="resolve-parts-section">
+                <div class="resolve-parts-header">
+                  <h4>🔧 Parts & Tools Needed</h4>
+                </div>
+                <div class="parts-checklist" id="resolvePartsChecklist">
+                  <!-- Parts populated dynamically -->
+                </div>
+                <div class="parts-actions">
+                  <button class="parts-action-btn primary" onclick="showResolveAddPartModal()">
+                    <span>+</span> Add Part
+                  </button>
+                  <button class="parts-action-btn secondary" onclick="showOrderPartModal()">
+                    Request Part
+                  </button>
+                </div>
+              </div>
+              
+              <div class="insight-card">
+                <div class="insight-icon">⏱️</div>
+                <div class="insight-text">
+                  <div class="insight-title">Estimated Resolution Time</div>
+                  <div class="insight-desc" id="resolveEstimatedTime">Calculating time estimate...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Video Library Section -->
+          <div class="diagram-section" style="margin-top: 16px;" id="resolveVideoSection">
+            <div class="diagram-header">
+              <h3>Video Library</h3>
+              <p class="video-library-subtitle">Watch how others completed similar repairs</p>
+            </div>
+            <div class="video-library-content" id="resolveVideoLibrary">
+              <!-- Videos populated dynamically -->
+            </div>
+          </div>
+          
+          <div class="diagram-section" style="margin-top: 16px;" id="resolveHistorySection">
           <div class="diagram-header"><h3>Service History at this Location</h3></div>
           <div class="history-timeline" id="historyTimeline"></div>
+        </div>
+        
+        <div class="section-divider"></div>
+        
+        <!-- Document Your Fix (in Resolve tab) -->
+        <div class="work-section">
+          <div class="section-header">
+            <h3>Document Your Fix</h3>
+            <p class="section-subtitle">Record notes and tips for future reference</p>
+          </div>
+          
+          <div class="fix-subsection">
+            <h4 class="subsection-title">Voice Note – What Did You Do?</h4>
+            <button class="voice-record-btn" onclick="recordResolveFixAudio()" id="resolveFixVoiceBtn">
+              <div class="voice-record-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                  <line x1="12" y1="19" x2="12" y2="23"></line>
+                  <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+              </div>
+              <span class="voice-record-text">Tap to record what you did to fix the issue</span>
+            </button>
+          </div>
+          
+          <div class="fix-subsection">
+            <h4 class="subsection-title">Video Tips for Future</h4>
+            <p class="subsection-desc">Record a quick video showing how to fix this issue</p>
+            <button class="video-record-area" onclick="recordResolveFixVideo()" id="resolveFixVideoBtn">
+              <div class="video-record-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="6" width="14" height="12" rx="2" ry="2"></rect>
+                  <polygon points="22,8 16,12 22,16"></polygon>
+                </svg>
+              </div>
+              <span class="video-record-text">Tap to record video</span>
+            </button>
+          </div>
+          
+          <div class="fix-subsection">
+            <h4 class="subsection-title">Written Tips & Notes</h4>
+            <textarea class="tips-textarea" id="resolveFixNotesTextarea" placeholder="Write any tips, tricks, or things to remember for next time..."></textarea>
+          </div>
+        </div>
+        
+        <div class="complete-actions">
+          <button class="complete-action-btn tertiary" onclick="saveAndPauseWork()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+            Save / Pause
+          </button>
+          <button class="complete-action-btn secondary" onclick="showCreateWorkOrderModal()">
+            <span>+</span> Create New Work Order
+          </button>
         </div>
       </div>
       
@@ -1077,57 +1721,6 @@
       <button class="arrive-btn" id="completeTaskBtn" onclick="completeTask()">✓ Complete Work Order</button>
     </div>
   </div>
-  
-  <!-- Bottom Navigation -->
-  <nav class="bottom-nav" id="mainNav">
-    <div class="nav-items">
-      <button class="nav-item active" onclick="showWorkPlan()">
-        <span class="icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-            <line x1="16" y1="2" x2="16" y2="6"></line>
-            <line x1="8" y1="2" x2="8" y2="6"></line>
-            <line x1="3" y1="10" x2="21" y2="10"></line>
-            <line x1="8" y1="14" x2="8" y2="14.01"></line>
-            <line x1="12" y1="14" x2="12" y2="14.01"></line>
-            <line x1="16" y1="14" x2="16" y2="14.01"></line>
-            <line x1="8" y1="18" x2="8" y2="18.01"></line>
-            <line x1="12" y1="18" x2="12" y2="18.01"></line>
-          </svg>
-        </span>
-        <span class="label">My Plan</span>
-      </button>
-      <button class="nav-item" onclick="showAssets()">
-        <span class="icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="7" height="7"></rect>
-            <rect x="14" y="3" width="7" height="7"></rect>
-            <rect x="14" y="14" width="7" height="7"></rect>
-            <rect x="3" y="14" width="7" height="7"></rect>
-          </svg>
-        </span>
-        <span class="label">My Assets</span>
-      </button>
-      <button class="nav-item" onclick="showMessages()">
-        <span class="icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-            <path d="M22 6L12 13L2 6"></path>
-          </svg>
-        </span>
-        <span class="label">Messages</span>
-      </button>
-      <button class="nav-item" onclick="showProfile()">
-        <span class="icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="8" r="4"></circle>
-            <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-          </svg>
-        </span>
-        <span class="label">Profile</span>
-      </button>
-    </div>
-  </nav>
   
   <!-- Asset Modal -->
   <div class="modal-overlay" id="assetModal">
@@ -1357,7 +1950,7 @@
           <select class="form-input" id="newTaskPosition">
             <!-- Options populated dynamically -->
           </select>
-          <div id="positionRecommendation" style="margin-top:8px;padding:10px 12px;background:rgba(46,125,50,0.1);border-radius:8px;font-size:0.8125rem;color:#2E7D32;display:none;">
+          <div id="positionRecommendation" style="margin-top:8px;padding:10px 12px;background:rgba(139,92,246,0.1);border-radius:8px;font-size:0.8125rem;color:#7C3AED;display:none;">
             <strong>📍 Recommended:</strong> <span id="recommendationText"></span>
           </div>
         </div>
@@ -1419,7 +2012,7 @@
     </div>
   </div>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // ==========================================
     // DATA DEFINITIONS FOR SAN JOSE UTILITY WORK
     // ==========================================
@@ -1855,10 +2448,10 @@
     ];
     
     const workTypes = {
-      standard: { label: 'Routine Service', color: '#4DA6FF', icon: '🔧' },
+      standard: { label: 'Routine Service', color: '#8B5CF6', icon: '🔧' },
       preventative: { label: 'Scheduled Work', color: '#FF9800', icon: '📋' },
       critical: { label: 'Priority/Emergency', color: '#E53935', icon: '🚨' },
-      pickup: { label: 'Material Pickup', color: '#2E7D32', icon: '📦' }
+      pickup: { label: 'Material Pickup', color: '#7C3AED', icon: '📦' }
     };
     
     // Warehouse location mapping based on part type
@@ -2539,7 +3132,7 @@
         const asset = currentSiteAssets?.[assetId];
         if (!asset) return { fill: '#F5F5F5', stroke: '#9CA3AF', text: '#6B7280' };
         const status = getAssetStatus(asset);
-        if (status === 'complete') return { fill: '#DCFCE7', stroke: '#10B981', text: '#047857' };
+        if (status === 'complete') return { fill: '#EDE9FE', stroke: '#8B5CF6', text: '#6D28D9' };
         if (status === 'partial') return { fill: '#FEF3C7', stroke: '#F59E0B', text: '#B45309' };
         return { fill: '#FEE2E2', stroke: '#EF4444', text: '#B91C1C' };
       };
@@ -2617,7 +3210,7 @@
           
           <!-- Status Legend -->
           <g transform="translate(500, 20)">
-            <circle cx="0" cy="0" r="6" fill="#DCFCE7" stroke="#10B981" stroke-width="2"/>
+            <circle cx="0" cy="0" r="6" fill="#EDE9FE" stroke="#8B5CF6" stroke-width="2"/>
             <text x="12" y="4" font-family="system-ui" font-size="8" fill="#718096">Complete</text>
             <circle cx="75" cy="0" r="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
             <text x="87" y="4" font-family="system-ui" font-size="8" fill="#718096">Partial</text>
@@ -2754,9 +3347,12 @@
       stops.forEach((s, i) => {
         const el = document.createElement('div');
         el.className = 'marker';
-        el.style.cssText = `width:32px;height:32px;border-radius:8px;background:${s.color || '#2E7D32'};color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3);cursor:pointer;`;
+        el.style.cssText = `width:32px;height:32px;border-radius:8px;background:${s.color || '#8B5CF6'};color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3);cursor:pointer;`;
         el.textContent = i + 1;
-        el.onclick = () => arriveAtTask(s.id);
+        el.onclick = (e) => {
+          e.stopPropagation();
+          arriveAtTask(s.id);
+        };
         
         const marker = new mapboxgl.Marker(el)
           .setLngLat([s.lng, s.lat])
@@ -2812,7 +3408,8 @@
     function showWorkPlan() {
       document.getElementById('workPlanView').classList.add('active');
       document.getElementById('taskDetailView').classList.remove('active');
-      document.getElementById('mainNav').style.display = 'block';
+      document.getElementById('profileView').classList.remove('active');
+      document.getElementById('assetsView').classList.remove('active');
     }
     
     function arriveAtTask(taskId) {
@@ -2842,15 +3439,43 @@
         fixVideoBtn.querySelector('.video-record-text').textContent = 'Tap to record video';
       }
       
+      // Reset resolve fix recording buttons
+      const resolveFixVoiceBtn = document.getElementById('resolveFixVoiceBtn');
+      const resolveFixVideoBtn = document.getElementById('resolveFixVideoBtn');
+      if (resolveFixVoiceBtn) {
+        resolveFixVoiceBtn.classList.remove('recording');
+        resolveFixVoiceBtn.querySelector('.voice-record-text').textContent = 'Tap to record what you did to fix the issue';
+      }
+      if (resolveFixVideoBtn) {
+        resolveFixVideoBtn.classList.remove('recording');
+        resolveFixVideoBtn.querySelector('.video-record-text').textContent = 'Tap to record video';
+      }
+      
       // Reset text inputs
       const fixNotes = document.getElementById('fixNotesTextarea');
       const issueDesc = document.getElementById('issueDescriptionInput');
+      const resolveFixNotes = document.getElementById('resolveFixNotesTextarea');
       if (fixNotes) fixNotes.value = '';
       if (issueDesc) issueDesc.value = '';
+      if (resolveFixNotes) resolveFixNotes.value = '';
+      
+      // Reset Resolve Issue state
+      resolveDocState = { assetTag: null, videos: [], photos: [], audio: [], notes: '' };
+      resolveInsightsShown = false;
+      document.getElementById('resolveProcessing')?.classList.add('hidden');
+      document.getElementById('resolveInsightsContainer')?.classList.add('hidden');
+      document.getElementById('resolveFollowupSection')?.classList.add('hidden');
+      document.getElementById('resolveIssueDescriptionInput').value = '';
+      ['tileAssetTagResolve', 'tileVideoResolve', 'tilePhotoResolve', 'tileAudioResolve'].forEach(id => {
+        document.getElementById(id)?.classList.remove('captured');
+      });
       
       document.getElementById('workPlanView').classList.remove('active');
       document.getElementById('taskDetailView').classList.add('active');
-      document.getElementById('mainNav').style.display = 'none';
+      
+      // Scroll to top of the page and task detail view
+      window.scrollTo(0, 0);
+      document.getElementById('taskDetailView').scrollTop = 0;
       
       // Reset tabs to show Complete Work first (for non-pickup tasks)
       if (task.workType !== 'pickup') {
@@ -3246,6 +3871,695 @@
       closeDocModal();
     }
     
+    // Resolve Issue Documentation State
+    let resolveDocState = {
+      assetTag: null,
+      videos: [],
+      photos: [],
+      audio: [],
+      notes: ''
+    };
+    
+    function scanAssetTagResolve() {
+      const modal = document.createElement('div');
+      modal.className = 'modal-overlay active';
+      modal.id = 'docModal';
+      modal.innerHTML = `
+        <div class="modal">
+          <div class="modal-handle"></div>
+          <div class="modal-header">
+            <h2>Scan Asset Tag</h2>
+            <button class="modal-close" onclick="closeDocModal()">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="scanner-preview">
+              <div class="scanner-frame">
+                <div class="scanner-line"></div>
+              </div>
+              <p class="scanner-hint">Position barcode or NFC tag</p>
+            </div>
+            <div class="scanner-manual">
+              <p style="text-align: center; color: var(--text-muted); margin-bottom: 12px;">Or enter tag ID manually:</p>
+              <input type="text" class="form-input" id="resolveAssetTagInput" placeholder="Enter asset tag ID">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeDocModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="confirmAssetTagResolve()">Confirm</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      setTimeout(() => document.getElementById('resolveAssetTagInput')?.focus(), 300);
+    }
+    
+    function confirmAssetTagResolve() {
+      const tagId = document.getElementById('resolveAssetTagInput')?.value.trim();
+      if (tagId) {
+        resolveDocState.assetTag = tagId;
+        document.getElementById('tileAssetTagResolve')?.classList.add('captured');
+        triggerResolveProcessing('asset');
+      }
+      closeDocModal();
+    }
+    
+    function captureVideoResolve() {
+      const modal = document.createElement('div');
+      modal.className = 'modal-overlay active';
+      modal.id = 'docModal';
+      modal.innerHTML = `
+        <div class="modal">
+          <div class="modal-handle"></div>
+          <div class="modal-header">
+            <h2>Capture Video</h2>
+            <button class="modal-close" onclick="closeDocModal()">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="camera-preview" style="background: #1a1a1a; border-radius: 12px; height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+              <div style="text-align: center; color: white;">
+                <div style="font-size: 3rem; margin-bottom: 10px;">🎥</div>
+                <p style="opacity: 0.7;">Camera preview</p>
+              </div>
+            </div>
+            <div style="text-align: center;">
+              <button class="btn btn-primary" id="resolveRecordBtn" onclick="toggleRecordingResolve()" style="width: 80px; height: 80px; border-radius: 50%; font-size: 1.5rem;">⏺️</button>
+              <p id="resolveRecordTime" style="margin-top: 12px; font-size: 1.25rem; font-weight: 600; color: var(--text-muted);">0:00</p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeDocModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="saveVideoResolve()">Save Video</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    
+    let resolveRecordingInterval = null;
+    let resolveRecordingSeconds = 0;
+    
+    function toggleRecordingResolve() {
+      const btn = document.getElementById('resolveRecordBtn');
+      if (resolveRecordingInterval) {
+        clearInterval(resolveRecordingInterval);
+        resolveRecordingInterval = null;
+        btn.textContent = '⏺️';
+        btn.style.background = '';
+      } else {
+        resolveRecordingSeconds = 0;
+        btn.textContent = '⏹️';
+        btn.style.background = '#E53935';
+        resolveRecordingInterval = setInterval(() => {
+          resolveRecordingSeconds++;
+          const mins = Math.floor(resolveRecordingSeconds / 60);
+          const secs = resolveRecordingSeconds % 60;
+          document.getElementById('resolveRecordTime').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        }, 1000);
+      }
+    }
+    
+    function saveVideoResolve() {
+      if (resolveRecordingInterval) {
+        clearInterval(resolveRecordingInterval);
+        resolveRecordingInterval = null;
+      }
+      if (resolveRecordingSeconds > 0) {
+        resolveDocState.videos.push({ duration: resolveRecordingSeconds, timestamp: new Date() });
+        document.getElementById('tileVideoResolve')?.classList.add('captured');
+        triggerResolveProcessing('video');
+      }
+      resolveRecordingSeconds = 0;
+      closeDocModal();
+    }
+    
+    function takePhotoResolve() {
+      const modal = document.createElement('div');
+      modal.className = 'modal-overlay active';
+      modal.id = 'docModal';
+      modal.innerHTML = `
+        <div class="modal">
+          <div class="modal-handle"></div>
+          <div class="modal-header">
+            <h2>Take Photo</h2>
+            <button class="modal-close" onclick="closeDocModal()">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="camera-preview" style="background: #1a1a1a; border-radius: 12px; height: 240px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+              <div style="text-align: center; color: white;">
+                <div style="font-size: 3rem; margin-bottom: 10px;">📷</div>
+                <p style="opacity: 0.7;">Camera preview</p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeDocModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="capturePhotoResolve()">📷 Capture</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    
+    function capturePhotoResolve() {
+      resolveDocState.photos.push({ timestamp: new Date() });
+      document.getElementById('tilePhotoResolve')?.classList.add('captured');
+      triggerResolveProcessing('photo');
+      closeDocModal();
+    }
+    
+    function recordAudioResolve() {
+      const modal = document.createElement('div');
+      modal.className = 'modal-overlay active';
+      modal.id = 'docModal';
+      modal.innerHTML = `
+        <div class="modal">
+          <div class="modal-handle"></div>
+          <div class="modal-header">
+            <h2>Record Audio</h2>
+            <button class="modal-close" onclick="closeDocModal()">×</button>
+          </div>
+          <div class="modal-body" style="text-align: center; padding: 30px 20px;">
+            <div style="font-size: 4rem; margin-bottom: 20px;">🎙️</div>
+            <button class="btn btn-primary" id="resolveAudioRecordBtn" onclick="toggleAudioRecordingResolve()" style="width: 80px; height: 80px; border-radius: 50%; font-size: 1.5rem;">⏺️</button>
+            <p id="resolveAudioRecordTime" style="margin-top: 16px; font-size: 1.5rem; font-weight: 600; color: var(--text-muted);">0:00</p>
+            <p style="margin-top: 10px; font-size: 0.875rem; color: var(--text-muted);">Tap to start recording</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeDocModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="saveAudioResolve()">Save Audio</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    
+    let resolveAudioRecordingInterval = null;
+    let resolveAudioRecordingSeconds = 0;
+    
+    function toggleAudioRecordingResolve() {
+      const btn = document.getElementById('resolveAudioRecordBtn');
+      if (resolveAudioRecordingInterval) {
+        clearInterval(resolveAudioRecordingInterval);
+        resolveAudioRecordingInterval = null;
+        btn.textContent = '⏺️';
+        btn.style.background = '';
+      } else {
+        resolveAudioRecordingSeconds = 0;
+        btn.textContent = '⏹️';
+        btn.style.background = '#E53935';
+        resolveAudioRecordingInterval = setInterval(() => {
+          resolveAudioRecordingSeconds++;
+          const mins = Math.floor(resolveAudioRecordingSeconds / 60);
+          const secs = resolveAudioRecordingSeconds % 60;
+          document.getElementById('resolveAudioRecordTime').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        }, 1000);
+      }
+    }
+    
+    function saveAudioResolve() {
+      if (resolveAudioRecordingInterval) {
+        clearInterval(resolveAudioRecordingInterval);
+        resolveAudioRecordingInterval = null;
+      }
+      if (resolveAudioRecordingSeconds > 0) {
+        resolveDocState.audio.push({ duration: resolveAudioRecordingSeconds });
+        document.getElementById('tileAudioResolve')?.classList.add('captured');
+        triggerResolveProcessing('audio');
+      }
+      resolveAudioRecordingSeconds = 0;
+      closeDocModal();
+    }
+    
+    function submitIssueDescription() {
+      const input = document.getElementById('resolveIssueDescriptionInput');
+      const description = input?.value.trim();
+      if (description) {
+        resolveDocState.notes = description;
+        triggerResolveProcessing('description');
+      }
+    }
+    
+    let resolveInsightsShown = false;
+    
+    function triggerResolveProcessing(inputType) {
+      if (resolveInsightsShown) return; // Only show once per session
+      
+      const processing = document.getElementById('resolveProcessing');
+      const insightsContainer = document.getElementById('resolveInsightsContainer');
+      const subtextEl = document.getElementById('processingSubtext');
+      
+      // Set processing message based on input type
+      const messages = {
+        asset: 'Reading asset tag data...',
+        video: 'Analyzing video footage...',
+        photo: 'Processing image...',
+        audio: 'Transcribing audio note...',
+        description: 'Analyzing issue description...'
+      };
+      subtextEl.textContent = messages[inputType] || 'Processing...';
+      
+      // Show processing state
+      processing.classList.remove('hidden');
+      
+      // Simulate processing time then show insights
+      setTimeout(() => {
+        processing.classList.add('hidden');
+        insightsContainer.classList.remove('hidden');
+        resolveInsightsShown = true;
+        
+        // Generate contextual insights based on current task
+        generateResolveInsights(inputType);
+        
+        // Scroll to insights
+        insightsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 2500);
+    }
+    
+    function generateResolveInsights(inputType) {
+      if (!currentTask) return;
+      
+      const task = currentTask;
+      const deviceType = task.deviceType || '';
+      const workType = task.workType || '';
+      const notes = task.notes || '';
+      const userDesc = resolveDocState.notes || '';
+      
+      // Determine if we need follow-up questions based on issue type
+      const needsReadings = deviceType.toLowerCase().includes('leak') || 
+                           deviceType.toLowerCase().includes('pressure') ||
+                           deviceType.toLowerCase().includes('regulator');
+      
+      const needsMeterInfo = deviceType.toLowerCase().includes('meter');
+      
+      // Build contextual insights based on work order + "captured" input
+      let issueAnalysis = '';
+      let steps = [];
+      let partsNeeded = '';
+      let estimatedTime = '';
+      let followupQuestions = [];
+      let videos = [];
+      
+      // Generate insights based on device type
+      if (deviceType.toLowerCase().includes('leak')) {
+        issueAnalysis = `Based on your ${inputType} documentation and the work order for "${task.alertTitle}", this appears to be a gas leak at the service location. The captured evidence shows signs consistent with a Grade 2 leak requiring immediate attention.`;
+        steps = [
+          { text: 'Set up safety perimeter and post caution tape around work area', safety: true },
+          { text: 'Confirm leak location using CGI survey - start at meter and work along service line' },
+          { text: 'Apply leak detection solution to all fittings and connections' },
+          { text: 'Keep all ignition sources away from work area. Use intrinsically safe tools only.', safety: true },
+          { text: 'Excavate around the service riser to expose the leak point' },
+          { text: 'If fitting leak - tighten or replace compression coupling. If pipe leak - cut and install repair coupling' },
+          { text: 'Soap test all repaired connections before backfill' },
+          { text: 'Purge line and verify no leakage during pressurization' },
+          { text: 'Contact dispatch if leak concentration exceeds 40% LEL at any point', safety: true }
+        ];
+        partsNeeded = [
+          { name: 'Compression Coupling 1-1/4"', partNumber: 'CC-125', qty: 1 },
+          { name: 'Stiffener Insert', partNumber: 'SS-125', qty: 2 },
+          { name: 'Leak Detection Solution', partNumber: 'LDS-32', qty: 1 },
+          { name: 'Caution Tape', partNumber: 'CT-1000', qty: 1 }
+        ];
+        estimatedTime = `45-60 minutes based on leak location and soil conditions. Similar jobs at this address averaged 52 minutes.`;
+        videos = [
+          { title: 'Grade 2 Leak Repair - Service Riser', duration: '8:32', author: 'Mike T.', badge: 'Most Viewed', views: 1247 },
+          { title: 'Compression Coupling Installation Guide', duration: '5:15', author: 'Sarah K.', badge: 'Recommended', views: 892 }
+        ];
+        
+        if (needsReadings) {
+          followupQuestions.push({
+            id: 'leakReading',
+            label: '📊 What is the current CGI reading (% gas)?',
+            placeholder: 'Enter CGI percentage...',
+            type: 'number'
+          });
+        }
+      } else if (deviceType.toLowerCase().includes('meter')) {
+        issueAnalysis = `Your documentation shows a meter-related service call at ${task.siteName}. The ${inputType} capture indicates ${workType === 'critical' ? 'an urgent meter issue requiring immediate resolution' : 'a standard meter service operation'}.`;
+        
+        if (task.deviceType.includes('Turn-On')) {
+          steps = [
+            { text: 'Verify customer is home and aware of service restoration' },
+            { text: 'Inspect meter set for any visible damage or tampering' },
+            { text: 'Check all connections with leak detection solution before opening valve', safety: true },
+            { text: 'Slowly open service valve and monitor for pressure' },
+            { text: 'Purge line at appliance furthest from meter' },
+            { text: 'Light pilot on primary appliance (furnace/water heater)' },
+            { text: 'Test all gas appliances with customer present' },
+            { text: 'Have customer sign service restoration acknowledgment' }
+          ];
+          videos = [
+            { title: 'Safe Meter Turn-On Procedure', duration: '6:20', author: 'James W.', badge: 'Most Viewed', views: 2341 },
+            { title: 'Appliance Pilot Lighting Guide', duration: '4:45', author: 'Linda R.', badge: null, views: 654 }
+          ];
+        } else if (task.deviceType.includes('Turn-Off')) {
+          steps = [
+            { text: 'Verify correct service address before proceeding' },
+            { text: 'Notify customer if present (not required for non-pay)' },
+            { text: 'Close service valve completely' },
+            { text: 'Install locking device on meter valve' },
+            { text: 'Cap outlet connection to prevent tampering', safety: true },
+            { text: 'Tag meter with disconnect notice and date' },
+            { text: 'Document meter reading before leaving' }
+          ];
+          videos = [
+            { title: 'Meter Disconnect & Lock Procedure', duration: '4:12', author: 'Tom B.', badge: 'Recommended', views: 876 }
+          ];
+        } else {
+          steps = [
+            { text: 'Verify meter set condition and check for visible damage' },
+            { text: 'Inspect inlet/outlet connections and regulator' },
+            { text: 'Check for proper grounding and bonding' },
+            { text: 'Verify meter index is readable and ERT is transmitting' },
+            { text: 'Complete meter inspection checklist per procedure' }
+          ];
+          videos = [
+            { title: 'Complete Meter Set Inspection', duration: '7:45', author: 'Chris M.', badge: 'Most Viewed', views: 1543 }
+          ];
+        }
+        partsNeeded = [
+          { name: 'Meter Lock', partNumber: 'ML-100', qty: 1 },
+          { name: 'Service Tag', partNumber: 'ST-200', qty: 1 },
+          { name: 'Leak Detection Solution', partNumber: 'LDS-32', qty: 1 },
+          { name: 'Pressure Gauge', partNumber: 'PG-15', qty: 1 }
+        ];
+        estimatedTime = `${task.duration || 30} minutes estimated. Account for customer interaction time.`;
+        
+        if (needsMeterInfo) {
+          followupQuestions.push({
+            id: 'meterReading',
+            label: '🔢 Current meter reading (if visible)',
+            placeholder: 'Enter meter reading...',
+            type: 'text'
+          });
+        }
+      } else if (deviceType.toLowerCase().includes('regulator')) {
+        issueAnalysis = `Regulator service identified at ${task.siteName}. Your ${inputType} shows the regulator condition. Common issues include diaphragm failure, vent blockage, or incorrect outlet pressure.`;
+        steps = [
+          { text: 'Ensure all downstream appliances are turned off before testing', safety: true },
+          { text: 'Connect manometer to outlet test port' },
+          { text: 'Check outlet pressure (should read 6-8" WC for residential)' },
+          { text: 'Inspect vent screen for blockage or debris' },
+          { text: 'Never adjust regulator while gas is flowing through it', safety: true },
+          { text: 'If pressure out of spec, replace entire regulator assembly' },
+          { text: 'Soap test all connections after work complete' },
+          { text: 'Document all pressure readings in work order' }
+        ];
+        partsNeeded = [
+          { name: 'Service Regulator', partNumber: 'REG-125', qty: 1 },
+          { name: 'Pressure Gauge/Manometer', partNumber: 'PG-15', qty: 1 },
+          { name: 'Pipe Dope', partNumber: 'PD-8', qty: 1 },
+          { name: 'Leak Detection Solution', partNumber: 'LDS-32', qty: 1 }
+        ];
+        estimatedTime = `30-45 minutes for inspection, 60-75 minutes if replacement required.`;
+        videos = [
+          { title: 'Regulator Pressure Testing Guide', duration: '5:55', author: 'Dave P.', badge: 'Most Viewed', views: 1876 },
+          { title: 'Regulator Replacement Step-by-Step', duration: '9:30', author: 'Amy L.', badge: 'Recommended', views: 1123 }
+        ];
+        
+        followupQuestions.push({
+          id: 'outletPressure',
+          label: '📏 Outlet pressure reading (inches WC)',
+          placeholder: 'Enter pressure reading...',
+          type: 'number'
+        });
+      } else if (deviceType.toLowerCase().includes('odor')) {
+        issueAnalysis = `Odor investigation at ${task.siteName}. Based on your ${inputType} documentation and the customer complaint, this requires systematic leak survey of all gas equipment at the location.`;
+        steps = [
+          { text: 'Treat all odor calls seriously - if strong odor detected, evacuate customer immediately', safety: true },
+          { text: 'Interview customer about odor timing, location, and strength' },
+          { text: 'Begin CGI survey at meter and work toward house' },
+          { text: 'Survey all exterior gas equipment - meter, service riser, regulator' },
+          { text: 'Check for CO as well as natural gas if entering structure', safety: true },
+          { text: 'If safe to enter, survey indoor appliances and connections' },
+          { text: 'Apply leak detection solution to any suspected leak points' },
+          { text: 'Document all findings - if no leak found, advise customer and complete report' }
+        ];
+        partsNeeded = [
+          { name: 'CGI Detector', partNumber: 'CGI-500', qty: 1 },
+          { name: 'Leak Detection Solution', partNumber: 'LDS-32', qty: 1 },
+          { name: 'Caution Tape', partNumber: 'CT-1000', qty: 1 }
+        ];
+        estimatedTime = `30-45 minutes for thorough survey. May extend if leak source is difficult to locate.`;
+        videos = [
+          { title: 'Odor Investigation Best Practices', duration: '7:20', author: 'James W.', badge: 'Most Viewed', views: 2156 },
+          { title: 'Using CGI Equipment Effectively', duration: '6:10', author: 'Rachel S.', badge: null, views: 943 }
+        ];
+        
+        followupQuestions.push({
+          id: 'odorStrength',
+          label: '👃 Odor strength at arrival (1-5 scale)',
+          placeholder: '1=faint, 5=strong...',
+          type: 'number'
+        });
+      } else {
+        // Generic service
+        issueAnalysis = `Service call documented for ${task.deviceType} at ${task.siteName}. Your ${inputType} capture has been analyzed for relevant details.`;
+        steps = [
+          { text: 'Review work order details and verify correct location' },
+          { text: 'Follow all safety protocols and ensure proper PPE', safety: true },
+          { text: task.notes || 'Complete service per standard procedure' },
+          { text: 'Document any unusual conditions found' },
+          { text: 'Verify work completion and update work order' }
+        ];
+        partsNeeded = task.parts?.map(p => ({ name: p.name, partNumber: p.partNumber || 'N/A', qty: p.quantity || 1 })) || [
+          { name: 'Standard Tool Kit', partNumber: 'TK-100', qty: 1 }
+        ];
+        estimatedTime = `${task.duration || 30} minutes estimated based on work order.`;
+        videos = [
+          { title: 'Field Service Best Practices', duration: '5:30', author: 'Training Dept.', badge: 'Recommended', views: 3421 }
+        ];
+      }
+      
+      // Populate issue analysis
+      document.getElementById('resolveIssueAnalysis').innerHTML = issueAnalysis;
+      
+      // Populate steps list
+      const stepsList = document.getElementById('resolveStepsList');
+      stepsList.innerHTML = steps.map((step, i) => `
+        <div class="resolve-step ${step.safety ? 'safety' : ''}">
+          <div class="resolve-step-number">${i + 1}</div>
+          <div class="resolve-step-text">
+            ${step.text}
+            ${step.safety ? '<span class="resolve-step-safety-badge">⚠️ Safety</span>' : ''}
+          </div>
+        </div>
+      `).join('');
+      
+      // Populate parts checklist
+      renderResolvePartsChecklist(partsNeeded);
+      
+      // Populate other insights
+      document.getElementById('resolveEstimatedTime').innerHTML = estimatedTime;
+      
+      // Populate video library
+      const videoLibrary = document.getElementById('resolveVideoLibrary');
+      videoLibrary.innerHTML = videos.map(video => `
+        <div class="video-card">
+          <div class="video-thumbnail">
+            <div class="video-rec-badge">
+              <div class="video-rec-dot"></div>
+              <span class="video-rec-text">REC</span>
+            </div>
+            <div class="video-duration">${video.duration}</div>
+            <div class="video-play-btn" onclick="playDemoVideo('${video.title}')">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+            </div>
+          </div>
+          <div class="video-info">
+            <div class="video-title">${video.title}</div>
+            <div class="video-meta">
+              <span class="video-meta-duration">${video.duration}</span>
+              <span class="video-meta-author">
+                <span class="video-meta-author-icon">👤</span>
+                ${video.author}
+              </span>
+              ${video.badge ? `<span class="video-meta-badge">${video.badge}</span>` : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
+      
+      // Show follow-up questions if needed
+      if (followupQuestions.length > 0) {
+        const followupSection = document.getElementById('resolveFollowupSection');
+        const followupContainer = document.getElementById('followupQuestions');
+        
+        followupContainer.innerHTML = followupQuestions.map(q => `
+          <div class="followup-question">
+            <label class="followup-question-label">${q.label}</label>
+            <input type="${q.type}" class="followup-question-input" id="followup_${q.id}" placeholder="${q.placeholder}">
+          </div>
+        `).join('') + `
+          <button class="followup-submit-btn" onclick="submitFollowupReadings()">Submit Readings</button>
+        `;
+        
+        followupSection.classList.remove('hidden');
+      }
+    }
+    
+    function playDemoVideo(title) {
+      alert(`Playing: ${title}\n\nThis would open the video player in a full implementation.`);
+    }
+    
+    let resolvePartsData = [];
+    let resolveCheckedParts = new Set();
+    
+    function renderResolvePartsChecklist(parts) {
+      resolvePartsData = parts;
+      resolveCheckedParts = new Set();
+      const container = document.getElementById('resolvePartsChecklist');
+      
+      if (!parts || parts.length === 0) {
+        container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.875rem; padding: 8px 0;">No specific parts identified. Use search to find needed parts.</p>';
+        return;
+      }
+      
+      container.innerHTML = parts.map((part, i) => `
+        <div class="part-check-item ${resolveCheckedParts.has(i) ? 'checked' : ''}" onclick="toggleResolvePart(${i})">
+          <div class="part-checkbox">
+            ${resolveCheckedParts.has(i) ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>' : ''}
+          </div>
+          <div class="part-check-info">
+            <div class="part-check-name">${part.name}</div>
+            <div class="part-check-number">${part.partNumber}</div>
+          </div>
+          <div class="part-check-qty">×${part.qty}</div>
+        </div>
+      `).join('');
+    }
+    
+    function toggleResolvePart(index) {
+      if (resolveCheckedParts.has(index)) {
+        resolveCheckedParts.delete(index);
+      } else {
+        resolveCheckedParts.add(index);
+      }
+      renderResolvePartsChecklist(resolvePartsData);
+    }
+    
+    function showResolveAddPartModal() {
+      const modal = document.createElement('div');
+      modal.className = 'modal-overlay active';
+      modal.id = 'docModal';
+      modal.innerHTML = `
+        <div class="modal" style="max-height: 85vh;">
+          <div class="modal-handle"></div>
+          <div class="modal-header">
+            <h2>Add Part</h2>
+            <button class="modal-close" onclick="closeDocModal()">×</button>
+          </div>
+          <div class="modal-body" style="padding: 0;">
+            <div style="padding: 16px; border-bottom: 1px solid var(--border-light);">
+              <div class="search-container" style="margin: 0;">
+                <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" class="search-input" id="resolvePartSearchInput" placeholder="Search parts catalog..." oninput="filterResolveParts(this.value)">
+              </div>
+            </div>
+            <div style="max-height: 350px; overflow-y: auto;" id="resolvePartSearchResults">
+              ${renderPartsCatalog()}
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      setTimeout(() => document.getElementById('resolvePartSearchInput')?.focus(), 300);
+    }
+    
+    const partsCatalog = [
+      { name: 'Compression Coupling 1"', partNumber: 'CC-100', category: 'Fittings' },
+      { name: 'Compression Coupling 1-1/4"', partNumber: 'CC-125', category: 'Fittings' },
+      { name: 'Compression Coupling 2"', partNumber: 'CC-200', category: 'Fittings' },
+      { name: 'Stiffener Insert 1"', partNumber: 'SS-100', category: 'Fittings' },
+      { name: 'Stiffener Insert 1-1/4"', partNumber: 'SS-125', category: 'Fittings' },
+      { name: 'Service Regulator', partNumber: 'REG-125', category: 'Regulators' },
+      { name: 'High Pressure Regulator', partNumber: 'REG-HP', category: 'Regulators' },
+      { name: 'Leak Detection Solution', partNumber: 'LDS-32', category: 'Supplies' },
+      { name: 'Caution Tape', partNumber: 'CT-1000', category: 'Supplies' },
+      { name: 'Pipe Dope', partNumber: 'PD-8', category: 'Supplies' },
+      { name: 'Meter Lock', partNumber: 'ML-100', category: 'Meter' },
+      { name: 'Service Tag', partNumber: 'ST-200', category: 'Meter' },
+      { name: 'Pressure Gauge', partNumber: 'PG-15', category: 'Tools' },
+      { name: 'Manometer', partNumber: 'MN-30', category: 'Tools' },
+      { name: 'CGI Detector', partNumber: 'CGI-500', category: 'Tools' },
+      { name: 'Anodeless Riser 1"', partNumber: 'AR-100', category: 'Risers' },
+      { name: 'Anodeless Riser 1-1/4"', partNumber: 'AR-125', category: 'Risers' },
+      { name: 'PE Pipe 1" (per ft)', partNumber: 'PE-100', category: 'Pipe' },
+      { name: 'Steel Pipe 1-1/4" (per ft)', partNumber: 'SP-125', category: 'Pipe' }
+    ];
+    
+    function renderPartsCatalog(filter = '') {
+      const filtered = filter 
+        ? partsCatalog.filter(p => 
+            p.name.toLowerCase().includes(filter.toLowerCase()) || 
+            p.partNumber.toLowerCase().includes(filter.toLowerCase()) ||
+            p.category.toLowerCase().includes(filter.toLowerCase())
+          )
+        : partsCatalog;
+      
+      if (filtered.length === 0) {
+        return '<p style="padding: 20px; text-align: center; color: var(--text-muted);">No parts found matching your search.</p>';
+      }
+      
+      // Group by category
+      const grouped = {};
+      filtered.forEach(p => {
+        if (!grouped[p.category]) grouped[p.category] = [];
+        grouped[p.category].push(p);
+      });
+      
+      return Object.entries(grouped).map(([category, parts]) => `
+        <div style="padding: 8px 16px; background: var(--bg-tertiary); font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">${category}</div>
+        ${parts.map(part => `
+          <div class="part-search-item" onclick="addResolvePartFromSearch('${part.name}', '${part.partNumber}')">
+            <div class="part-search-info">
+              <div class="part-search-name">${part.name}</div>
+              <div class="part-search-number">${part.partNumber}</div>
+            </div>
+            <div class="part-search-add">+ Add</div>
+          </div>
+        `).join('')}
+      `).join('');
+    }
+    
+    function filterResolveParts(query) {
+      document.getElementById('resolvePartSearchResults').innerHTML = renderPartsCatalog(query);
+    }
+    
+    function addResolvePartFromSearch(name, partNumber) {
+      resolvePartsData.push({ name, partNumber, qty: 1 });
+      renderResolvePartsChecklist(resolvePartsData);
+      closeDocModal();
+      
+      // Show toast
+      const toast = document.createElement('div');
+      toast.className = 'toast-notification';
+      toast.innerHTML = `<span style="margin-right: 8px;">✓</span> ${name} added to parts list`;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.classList.add('show'), 10);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 2000);
+    }
+    
+    function submitFollowupReadings() {
+      // Collect readings and update insights if needed
+      const followupSection = document.getElementById('resolveFollowupSection');
+      followupSection.innerHTML = `
+        <div class="section-header">
+          <h3>✅ Readings Recorded</h3>
+          <p class="section-subtitle">Information added to work order documentation</p>
+        </div>
+      `;
+      
+      // Could enhance insights based on readings here
+    }
+    
     function describeIssue() {
       const modal = document.createElement('div');
       modal.className = 'modal-overlay active';
@@ -3428,16 +4742,79 @@
       }
     }
     
+    // Resolve tab fix recording (uses same state but different buttons)
+    let resolveFixRecordingInterval = null;
+    let resolveFixRecordingSeconds = 0;
+    let resolveFixRecordingType = null;
+    
+    function recordResolveFixAudio() {
+      const btn = document.getElementById('resolveFixVoiceBtn');
+      
+      if (resolveFixRecordingInterval && resolveFixRecordingType === 'audio') {
+        // Stop recording
+        clearInterval(resolveFixRecordingInterval);
+        resolveFixRecordingInterval = null;
+        btn.classList.remove('recording');
+        btn.querySelector('.voice-record-text').textContent = `✓ Recorded ${resolveFixRecordingSeconds}s - Tap to re-record`;
+        documentationState.audio.push({ duration: resolveFixRecordingSeconds, type: 'fix' });
+        updateDocumentationUI();
+        resolveFixRecordingSeconds = 0;
+        resolveFixRecordingType = null;
+      } else {
+        // Start recording
+        resolveFixRecordingSeconds = 0;
+        resolveFixRecordingType = 'audio';
+        btn.classList.add('recording');
+        btn.querySelector('.voice-record-text').textContent = 'Recording... Tap to stop';
+        
+        resolveFixRecordingInterval = setInterval(() => {
+          resolveFixRecordingSeconds++;
+          btn.querySelector('.voice-record-text').textContent = `Recording ${resolveFixRecordingSeconds}s... Tap to stop`;
+        }, 1000);
+      }
+    }
+    
+    function recordResolveFixVideo() {
+      const btn = document.getElementById('resolveFixVideoBtn');
+      
+      if (resolveFixRecordingInterval && resolveFixRecordingType === 'video') {
+        // Stop recording
+        clearInterval(resolveFixRecordingInterval);
+        resolveFixRecordingInterval = null;
+        btn.classList.remove('recording');
+        btn.querySelector('.video-record-text').textContent = `✓ Recorded ${resolveFixRecordingSeconds}s - Tap to re-record`;
+        documentationState.videos.push({ duration: resolveFixRecordingSeconds, type: 'fix' });
+        updateDocumentationUI();
+        resolveFixRecordingSeconds = 0;
+        resolveFixRecordingType = null;
+      } else {
+        // Start recording
+        resolveFixRecordingSeconds = 0;
+        resolveFixRecordingType = 'video';
+        btn.classList.add('recording');
+        btn.querySelector('.video-record-text').textContent = 'Recording... Tap to stop';
+        
+        resolveFixRecordingInterval = setInterval(() => {
+          resolveFixRecordingSeconds++;
+          btn.querySelector('.video-record-text').textContent = `Recording ${resolveFixRecordingSeconds}s... Tap to stop`;
+        }, 1000);
+      }
+    }
+    
     // Save and Complete Work
     function saveAndPauseWork() {
       if (!currentTask) return;
       
-      // Gather all documentation
+      // Gather all documentation from both Complete Work and Resolve Issue tabs
       const notes = document.getElementById('fixNotesTextarea')?.value.trim();
+      const resolveNotes = document.getElementById('resolveFixNotesTextarea')?.value.trim();
       const issueDesc = document.getElementById('issueDescriptionInput')?.value.trim();
       
       if (notes) {
         documentationState.notes = notes;
+      }
+      if (resolveNotes) {
+        documentationState.notes = (documentationState.notes ? documentationState.notes + '\n' : '') + resolveNotes;
       }
       
       // Show save confirmation
@@ -4752,14 +6129,230 @@
       if (!map) return;
       
       map.on('click', (e) => {
-        // Don't trigger if clicking on a marker
-        const features = map.queryRenderedFeatures(e.point);
-        const clickedMarker = features.some(f => f.layer && f.layer.id === 'markers');
-        
-        if (!clickedMarker) {
-          showNewTaskModal(e.lngLat.lat, e.lngLat.lng);
-        }
+        showNearbyWorkModal(e.lngLat.lat, e.lngLat.lng);
       });
+    }
+    
+    // Available work pool - tasks that can be picked up
+    const availableWorkPool = [
+      { id: 'AW-001', siteId: 'WO-79001', siteName: '2145 Stevens Creek Blvd', lat: 37.3239, lng: -121.9650, duration: 45, workType: 'standard', deviceType: 'Meter Turn-On', skills: ['Meter Installation'], priority: 3, notes: 'New account activation - verify meter reading and turn on service.' },
+      { id: 'AW-002', siteId: 'WO-79002', siteName: '890 Blossom Hill Rd', lat: 37.2510, lng: -121.8890, duration: 60, workType: 'preventative', deviceType: 'Regulator Inspection', skills: ['Regulator Service'], priority: 5, notes: 'Annual regulator inspection due. Check inlet/outlet pressures.' },
+      { id: 'AW-003', siteId: 'WO-79003', siteName: '1567 Meridian Ave', lat: 37.2875, lng: -121.9120, duration: 30, workType: 'standard', deviceType: 'Pilot Relight', skills: ['First Aid/CPR'], priority: 4, notes: 'Customer reports furnace pilot out after power outage.' },
+      { id: 'AW-004', siteId: 'WO-79004', siteName: '3421 Union Ave', lat: 37.3012, lng: -121.9350, duration: 90, workType: 'preventative', deviceType: 'Leak Survey', skills: ['Gas Leak Detection', 'OQ Certified'], priority: 6, notes: 'Scheduled leak survey for commercial block. CGI required.' },
+      { id: 'AW-005', siteId: 'WO-79005', siteName: '785 The Alameda', lat: 37.3298, lng: -121.9089, duration: 45, workType: 'standard', deviceType: 'Meter Exchange', skills: ['Meter Installation'], priority: 3, notes: 'AMI meter upgrade - replace legacy meter with smart meter.' },
+      { id: 'AW-006', siteId: 'WO-79006', siteName: '4590 Almaden Expy', lat: 37.2456, lng: -121.8567, duration: 120, workType: 'preventative', deviceType: 'New Gas Service', skills: ['Pipeline Repair', 'OQ Certified'], priority: 5, notes: 'New construction service installation. Run service from main.' },
+      { id: 'AW-007', siteId: 'WO-79007', siteName: '2201 Tully Rd', lat: 37.3089, lng: -121.8345, duration: 30, workType: 'standard', deviceType: 'Meter Turn-Off', skills: ['Meter Installation'], priority: 2, notes: 'Customer requested disconnect - moving out of residence.' },
+      { id: 'AW-008', siteId: 'WO-79008', siteName: '1100 Coleman Ave', lat: 37.3654, lng: -121.9234, duration: 75, workType: 'preventative', deviceType: 'Valve Inspection', skills: ['Confined Space', 'OQ Certified'], priority: 5, notes: 'Annual valve inspection - underground vault access required.' },
+      { id: 'AW-009', siteId: 'WO-79009', siteName: '550 Payne Ave', lat: 37.3412, lng: -121.8978, duration: 45, workType: 'standard', deviceType: 'Odor Investigation', skills: ['Gas Leak Detection'], priority: 7, notes: 'Customer reports gas smell near water heater. Investigate.' },
+      { id: 'AW-010', siteId: 'WO-79010', siteName: '3890 Monterey Rd', lat: 37.2678, lng: -121.8456, duration: 60, workType: 'preventative', deviceType: 'Regulator Replacement', skills: ['Regulator Service'], priority: 6, notes: 'Proactive regulator replacement - unit approaching end of life.' },
+      { id: 'AW-011', siteId: 'WO-79011', siteName: '1450 Kooser Rd', lat: 37.2701, lng: -121.8812, duration: 40, workType: 'standard', deviceType: 'Pressure Test', skills: ['OQ Certified'], priority: 4, notes: 'Post-repair pressure test required for service line.' },
+      { id: 'AW-012', siteId: 'WO-79012', siteName: '2780 Aborn Rd', lat: 37.3123, lng: -121.8123, duration: 90, workType: 'preventative', deviceType: 'Service Repair', skills: ['Pipeline Repair', 'OQ Certified'], priority: 6, notes: 'Replace corroded service riser section.' }
+    ];
+    
+    // Worker skills (from profile)
+    const workerSkills = ['Gas Leak Detection', 'Meter Installation', 'Pipeline Repair', 'Regulator Service', 'OQ Certified', 'CDL Class B', 'Confined Space', 'First Aid/CPR'];
+    
+    function calculateDistance(lat1, lng1, lat2, lng2) {
+      const R = 3959; // Earth radius in miles
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLng = (lng2 - lng1) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLng/2) * Math.sin(dLng/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+    
+    function getRemainingDayMinutes() {
+      const totalDayMinutes = 8 * 60; // 8 hour day
+      const currentWorkMinutes = weekData[selectedDay].stops.reduce((sum, s) => sum + (s.duration || 0), 0);
+      return totalDayMinutes - currentWorkMinutes;
+    }
+    
+    function showNearbyWorkModal(lat, lng) {
+      // Calculate distances and sort
+      const workWithDistance = availableWorkPool.map(w => ({
+        ...w,
+        distance: calculateDistance(lat, lng, w.lat, w.lng)
+      })).sort((a, b) => a.distance - b.distance);
+      
+      // Get 3 closest
+      const closest3 = workWithDistance.slice(0, 3);
+      
+      // Calculate remaining time
+      const remainingMinutes = getRemainingDayMinutes();
+      
+      // Filter work that fits
+      const fittingWork = workWithDistance.filter(w => {
+        const fitsDuration = w.duration <= remainingMinutes;
+        const fitsSkills = w.skills.some(skill => workerSkills.includes(skill));
+        return fitsDuration && fitsSkills;
+      });
+      
+      const modal = document.createElement('div');
+      modal.className = 'modal-overlay active';
+      modal.id = 'nearbyWorkModal';
+      modal.innerHTML = `
+        <div class="modal" style="max-height: 85vh;">
+          <div class="modal-handle"></div>
+          <div class="modal-header">
+            <div>
+              <h2>📍 Nearby Available Work</h2>
+              <p style="font-size: 0.8125rem; color: var(--text-muted); margin-top: 4px;">Tap location to find work you can pick up</p>
+            </div>
+            <button class="modal-close" onclick="closeNearbyWorkModal()">×</button>
+          </div>
+          <div class="modal-body" style="padding-bottom: 0;">
+            <!-- Remaining time indicator -->
+            <div class="remaining-time-banner">
+              <div class="remaining-time-icon">⏱️</div>
+              <div class="remaining-time-info">
+                <div class="remaining-time-label">Time remaining today</div>
+                <div class="remaining-time-value">${Math.floor(remainingMinutes / 60)}h ${remainingMinutes % 60}m available</div>
+              </div>
+            </div>
+            
+            <!-- Closest 3 section -->
+            <div class="nearby-section">
+              <div class="nearby-section-header">
+                <span class="nearby-section-title">📍 Closest to Tap</span>
+                <span class="nearby-section-count">${closest3.length} tasks</span>
+              </div>
+              <div class="nearby-work-list">
+                ${closest3.map(w => renderNearbyWorkCard(w, remainingMinutes)).join('')}
+              </div>
+            </div>
+            
+            <!-- Search/Filter section -->
+            <div class="nearby-section" style="margin-top: 20px;">
+              <div class="nearby-section-header">
+                <span class="nearby-section-title">🔍 Fits Your Day & Skills</span>
+                <span class="nearby-section-count">${fittingWork.length} tasks</span>
+              </div>
+              <div class="nearby-filter-bar">
+                <input type="text" class="form-input" id="nearbySearchInput" placeholder="Search by address or work type..." oninput="filterNearbyWork(${lat}, ${lng})">
+              </div>
+              <div class="nearby-work-list" id="fittingWorkList">
+                ${fittingWork.length > 0 ? fittingWork.slice(0, 5).map(w => renderNearbyWorkCard(w, remainingMinutes)).join('') : '<div class="no-fitting-work">No tasks match your available time and skills</div>'}
+              </div>
+              ${fittingWork.length > 5 ? `<div class="nearby-show-more" onclick="showAllFittingWork(${lat}, ${lng})">Show all ${fittingWork.length} matching tasks</div>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      
+      // Store for filtering
+      window.nearbyWorkData = { lat, lng, remainingMinutes, fittingWork };
+    }
+    
+    function renderNearbyWorkCard(work, remainingMinutes) {
+      const fitsTime = work.duration <= remainingMinutes;
+      const fitsSkills = work.skills.some(skill => workerSkills.includes(skill));
+      const matchingSkills = work.skills.filter(skill => workerSkills.includes(skill));
+      
+      const workTypeColors = {
+        'critical': { bg: '#FEE2E2', border: '#EF4444', text: '#DC2626' },
+        'preventative': { bg: '#FEF3C7', border: '#F59E0B', text: '#D97706' },
+        'standard': { bg: '#EDE9FE', border: '#8B5CF6', text: '#7C3AED' }
+      };
+      const colors = workTypeColors[work.workType] || workTypeColors.standard;
+      
+      return `
+        <div class="nearby-work-card ${!fitsTime ? 'no-fit-time' : ''}" onclick="addWorkToDay('${work.id}')">
+          <div class="nearby-work-header">
+            <div class="nearby-work-type" style="background: ${colors.bg}; color: ${colors.text}; border: 1px solid ${colors.border};">
+              ${work.deviceType}
+            </div>
+            <div class="nearby-work-distance">${work.distance.toFixed(1)} mi</div>
+          </div>
+          <div class="nearby-work-address">${work.siteName}</div>
+          <div class="nearby-work-meta">
+            <span class="nearby-work-duration ${fitsTime ? 'fits' : 'no-fit'}">
+              ${fitsTime ? '✓' : '⚠️'} ${work.duration} min
+            </span>
+            <span class="nearby-work-wo">${work.siteId}</span>
+          </div>
+          <div class="nearby-work-skills">
+            ${matchingSkills.length > 0 
+              ? matchingSkills.map(s => `<span class="skill-match">✓ ${s}</span>`).join('') 
+              : `<span class="skill-missing">Skills needed: ${work.skills.join(', ')}</span>`}
+          </div>
+          <div class="nearby-work-notes">${work.notes}</div>
+          ${fitsTime && fitsSkills ? '<div class="nearby-work-add">+ Add to Today\'s Plan</div>' : '<div class="nearby-work-add disabled">Cannot add - ' + (!fitsTime ? 'exceeds time' : 'missing skills') + '</div>'}
+        </div>
+      `;
+    }
+    
+    function filterNearbyWork(lat, lng) {
+      const searchTerm = document.getElementById('nearbySearchInput').value.toLowerCase();
+      const { remainingMinutes, fittingWork } = window.nearbyWorkData;
+      
+      const filtered = fittingWork.filter(w => 
+        w.siteName.toLowerCase().includes(searchTerm) ||
+        w.deviceType.toLowerCase().includes(searchTerm) ||
+        w.siteId.toLowerCase().includes(searchTerm)
+      );
+      
+      document.getElementById('fittingWorkList').innerHTML = filtered.length > 0 
+        ? filtered.slice(0, 5).map(w => renderNearbyWorkCard(w, remainingMinutes)).join('')
+        : '<div class="no-fitting-work">No tasks match your search</div>';
+    }
+    
+    function showAllFittingWork(lat, lng) {
+      const { remainingMinutes, fittingWork } = window.nearbyWorkData;
+      document.getElementById('fittingWorkList').innerHTML = fittingWork.map(w => renderNearbyWorkCard(w, remainingMinutes)).join('');
+    }
+    
+    function closeNearbyWorkModal() {
+      const modal = document.getElementById('nearbyWorkModal');
+      if (modal) modal.remove();
+    }
+    
+    function addWorkToDay(workId) {
+      const work = availableWorkPool.find(w => w.id === workId);
+      if (!work) return;
+      
+      const remainingMinutes = getRemainingDayMinutes();
+      const fitsTime = work.duration <= remainingMinutes;
+      const fitsSkills = work.skills.some(skill => workerSkills.includes(skill));
+      
+      if (!fitsTime || !fitsSkills) {
+        showToast('Cannot Add', !fitsTime ? 'Task exceeds available time' : 'Missing required skills');
+        return;
+      }
+      
+      // Create task from work
+      const newTask = {
+        id: `${selectedDay}-pickup-${work.id}`,
+        siteId: work.siteId,
+        siteName: work.siteName,
+        lat: work.lat,
+        lng: work.lng,
+        duration: work.duration,
+        workType: work.workType,
+        deviceType: work.deviceType,
+        partNumber: work.id,
+        priority: work.priority,
+        targetAsset: 'METER',
+        alertTitle: work.deviceType,
+        notes: work.notes,
+        fullDescription: work.notes,
+        parts: [],
+        pickedUp: true
+      };
+      
+      // Add to end of day
+      weekData[selectedDay].stops.push(newTask);
+      
+      // Remove from pool
+      const poolIndex = availableWorkPool.findIndex(w => w.id === workId);
+      if (poolIndex > -1) availableWorkPool.splice(poolIndex, 1);
+      
+      // Close modal and refresh
+      closeNearbyWorkModal();
+      showToast('Work Added', `${work.deviceType} at ${work.siteName.split(',')[0]}`);
+      updateView();
     }
     
     function showCreateWorkOrderModal() {
@@ -4822,27 +6415,621 @@
       const woDescription = document.getElementById('woDescription').value.trim();
       
       if (!woDescription) {
-        alert('Please enter a description for the work order');
+        showAppAlert('Missing Information', 'Please enter a description for the work order.');
         return;
       }
       
-      alert('Work Order Created!\n\nThe follow-up work order has been submitted to dispatch for scheduling.');
       closeCreateWOModal();
+      showAppAlert('Work Order Created!', 'The follow-up work order has been submitted to dispatch for scheduling.');
     }
     
     function completeTask() {
       if (currentTask) {
         completedTasks.add(currentTask.id);
-        alert('Work order completed!\n\nAll documentation has been saved.');
+        showAppAlert('Work Order Completed', 'All documentation has been saved.');
         showWorkPlan();
         updateView();
       }
     }
     
     // Placeholder navigation functions
-    function showMessages() { alert('Messages feature - coming soon'); }
-    function showAssets() { alert('My Assets feature - coming soon'); }
-    function showProfile() { alert('Profile feature - coming soon'); }
+    function showMessages() { showAppAlert('Coming Soon', 'Messages feature is coming soon.'); }
+    function showAssets() {
+      document.getElementById('workPlanView').classList.remove('active');
+      document.getElementById('taskDetailView').classList.remove('active');
+      document.getElementById('profileView').classList.remove('active');
+      document.getElementById('assetsView').classList.add('active');
+      renderAssetsView();
+    }
+    
+    function renderAssetsView() {
+      // Get all tasks across all days that have assets
+      const allTasks = [];
+      Object.entries(weekData).forEach(([day, data]) => {
+        data.stops.forEach(stop => {
+          if (stop.targetAsset) {
+            allTasks.push({ ...stop, day });
+          }
+        });
+      });
+      
+      // Calculate stats
+      const stats = {
+        total: allTasks.length,
+        meters: allTasks.filter(t => t.targetAsset === 'METER').length,
+        services: allTasks.filter(t => t.targetAsset === 'SERVICE').length,
+        regulators: allTasks.filter(t => t.targetAsset === 'REGULATOR').length,
+        mains: allTasks.filter(t => t.targetAsset === 'MAIN').length
+      };
+      
+      const statsHTML = `
+        <div class="assets-stats">
+          <div class="assets-stat-card">
+            <div class="assets-stat-value">${stats.total}</div>
+            <div class="assets-stat-label">Total Assets</div>
+          </div>
+          <div class="assets-stat-card">
+            <div class="assets-stat-value">${stats.meters}</div>
+            <div class="assets-stat-label">Meters</div>
+          </div>
+          <div class="assets-stat-card">
+            <div class="assets-stat-value">${stats.services}</div>
+            <div class="assets-stat-label">Services</div>
+          </div>
+          <div class="assets-stat-card">
+            <div class="assets-stat-value">${stats.regulators}</div>
+            <div class="assets-stat-label">Regulators</div>
+          </div>
+        </div>
+      `;
+      
+      // Generate asset cards with full diagram component
+      const assetCardsHTML = allTasks.map((task, index) => {
+        const isFirst = index === 0;
+        const dayLabel = task.day.charAt(0).toUpperCase() + task.day.slice(1);
+        const assetIcon = getAssetIcon(task.targetAsset);
+        const assetColor = getAssetColor(task.targetAsset);
+        
+        return `
+          <div class="asset-accordion ${isFirst ? 'open' : ''}" data-task-id="${task.id}">
+            <div class="asset-accordion-header" onclick="toggleAssetAccordion(this)">
+              <div class="asset-accordion-left">
+                <div class="asset-type-badge" style="background: ${assetColor};">${assetIcon}</div>
+                <div class="asset-accordion-info">
+                  <div class="asset-accordion-title">${task.siteName}</div>
+                  <div class="asset-accordion-subtitle">${task.targetAsset} • ${task.deviceType} • ${dayLabel}</div>
+                </div>
+              </div>
+              <div class="asset-accordion-arrow">${isFirst ? '▲' : '▼'}</div>
+            </div>
+            <div class="asset-accordion-content" style="${isFirst ? '' : 'display: none;'}">
+              <!-- Full Service Location Diagram -->
+              <div class="diagram-section asset-diagram-full">
+                <div class="diagram-header">
+                  <h3>Service Location Diagram</h3>
+                  <p style="font-size: 0.8125rem; color: var(--text-muted); margin-top: 4px;">Tap any asset to document</p>
+                </div>
+                <div class="diagram-legend" style="margin-bottom: 12px;">
+                  <div class="diagram-legend-item"><div class="diagram-legend-dot complete"></div><span>Complete</span></div>
+                  <div class="diagram-legend-item"><div class="diagram-legend-dot partial"></div><span>Partial</span></div>
+                  <div class="diagram-legend-item"><div class="diagram-legend-dot missing"></div><span>Needed</span></div>
+                </div>
+                <div class="diagram-wrapper" id="assetDiagram-${task.id}"></div>
+              </div>
+              
+              <div class="asset-details-row">
+                <div class="asset-detail">
+                  <span class="asset-detail-label">Work Order</span>
+                  <span class="asset-detail-value">${task.siteId}</span>
+                </div>
+                <div class="asset-detail">
+                  <span class="asset-detail-label">Priority</span>
+                  <span class="asset-detail-value">${task.priority}/10</span>
+                </div>
+                <div class="asset-detail">
+                  <span class="asset-detail-label">Duration</span>
+                  <span class="asset-detail-value">${task.duration} min</span>
+                </div>
+              </div>
+              <button class="asset-view-task-btn" onclick="navigateToTask('${task.id}')">View Work Order →</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      document.getElementById('assetsContent').innerHTML = statsHTML + `
+        <div class="assets-section-title">This Week's Assets</div>
+        <div class="asset-accordion-list">${assetCardsHTML}</div>
+      `;
+      
+      // Render diagram for the first (open) task
+      if (allTasks.length > 0) {
+        renderAssetDiagramForTask(allTasks[0]);
+      }
+    }
+    
+    function getAssetIcon(assetType) {
+      const icons = {
+        'METER': '⏱️',
+        'SERVICE': '🔧',
+        'REGULATOR': '⚙️',
+        'MAIN': '🔴'
+      };
+      return icons[assetType] || '📍';
+    }
+    
+    function getAssetColor(assetType) {
+      const colors = {
+        'METER': 'linear-gradient(135deg, #8B5CF6, #A855F7)',
+        'SERVICE': 'linear-gradient(135deg, #F59E0B, #F97316)',
+        'REGULATOR': 'linear-gradient(135deg, #3B82F6, #6366F1)',
+        'MAIN': 'linear-gradient(135deg, #EF4444, #DC2626)'
+      };
+      return colors[assetType] || 'linear-gradient(135deg, #6B7280, #9CA3AF)';
+    }
+    
+    function renderAssetDiagramForTask(task) {
+      const diagramId = `assetDiagram-${task.id}`;
+      const container = document.getElementById(diagramId);
+      if (!container) return;
+      
+      // Use the same SVG as the main service diagram
+      const svgContent = `
+        <svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
+          <defs>
+            <pattern id="grid-${task.id}" patternUnits="userSpaceOnUse" width="35" height="35">
+              <path d="M 35 0 L 0 0 0 35" fill="none" stroke="#E2E8F0" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="700" height="400" fill="#FAFAFA"/>
+          <rect width="700" height="400" fill="url(#grid-${task.id})"/>
+          
+          <!-- Ground Line -->
+          <line x1="0" y1="280" x2="700" y2="280" stroke="#8B7355" stroke-width="4"/>
+          <text x="650" y="295" font-family="DM Sans" font-size="10" fill="#718096">GRADE</text>
+          
+          <!-- Building Outline -->
+          <rect x="400" y="100" width="250" height="180" fill="none" stroke="#CBD5E0" stroke-width="2" stroke-dasharray="8,4"/>
+          <text x="525" y="125" font-family="DM Sans" font-size="11" text-anchor="middle" fill="#718096">CUSTOMER PREMISES</text>
+          
+          <!-- Main Line (underground) -->
+          <line x1="50" y1="340" x2="200" y2="340" stroke="#FF9800" stroke-width="8"/>
+          <text x="125" y="365" font-family="DM Sans" font-size="10" text-anchor="middle" fill="#718096">MAIN</text>
+          
+          <!-- Service Line (underground) -->
+          <line x1="200" y1="340" x2="200" y2="280" stroke="#FF9800" stroke-width="4"/>
+          <line x1="200" y1="340" x2="280" y2="340" stroke="#FF9800" stroke-width="4"/>
+          <line x1="280" y1="340" x2="280" y2="280" stroke="#FF9800" stroke-width="4"/>
+          
+          <!-- Corporation Stop (TAP) -->
+          <g class="asset ${getAssetClassForView('SERVICE', task)}" data-asset="SERVICE" onclick="showAssetModalFromView('SERVICE', '${task.id}')" style="cursor: pointer;">
+            <circle cx="200" cy="340" r="14" stroke-width="3"/>
+            <text x="200" y="344" font-family="Space Grotesk" font-size="9" text-anchor="middle" fill="#0D1B2A" font-weight="600">TAP</text>
+          </g>
+          
+          <!-- Curb Valve -->
+          <g class="asset ${getAssetClassForView('VALVE', task)}" data-asset="VALVE" onclick="showAssetModalFromView('VALVE', '${task.id}')" style="cursor: pointer;">
+            <rect x="260" y="300" width="40" height="45" rx="5" stroke-width="3"/>
+            <text x="280" y="328" font-family="Space Grotesk" font-size="9" text-anchor="middle" fill="#0D1B2A" font-weight="600">VALVE</text>
+          </g>
+          <rect x="272" y="255" width="16" height="50" fill="#4A5568"/>
+          
+          <!-- Service Riser -->
+          <line x1="280" y1="280" x2="280" y2="200" stroke="#1E3A5F" stroke-width="4"/>
+          <line x1="280" y1="200" x2="320" y2="200" stroke="#1E3A5F" stroke-width="4"/>
+          
+          <!-- Regulator -->
+          <g class="asset ${getAssetClassForView('REGULATOR', task)}" data-asset="REGULATOR" onclick="showAssetModalFromView('REGULATOR', '${task.id}')" style="cursor: pointer;">
+            <rect x="320" y="175" width="55" height="50" rx="6" stroke-width="3"/>
+            <text x="347" y="205" font-family="Space Grotesk" font-size="10" text-anchor="middle" fill="#0D1B2A" font-weight="600">REG</text>
+          </g>
+          
+          <!-- Meter -->
+          <line x1="375" y1="200" x2="420" y2="200" stroke="#1E3A5F" stroke-width="4"/>
+          <g class="asset ${getAssetClassForView('METER', task)}" data-asset="METER" onclick="showAssetModalFromView('METER', '${task.id}')" style="cursor: pointer;">
+            <rect x="420" y="165" width="70" height="70" rx="10" stroke-width="3"/>
+            <circle cx="455" cy="200" r="22" fill="none" stroke="#0D1B2A" stroke-width="1.5"/>
+            <text x="455" y="205" font-family="Space Grotesk" font-size="10" text-anchor="middle" fill="#0D1B2A" font-weight="600">METER</text>
+          </g>
+          
+          <!-- Customer Piping -->
+          <line x1="490" y1="200" x2="580" y2="200" stroke="#CBD5E0" stroke-width="3" stroke-dasharray="6,3"/>
+          <text x="540" y="190" font-family="DM Sans" font-size="9" fill="#718096">→ APPLIANCES</text>
+        </svg>`;
+      
+      container.innerHTML = svgContent;
+    }
+    
+    function getAssetClassForView(assetType, task) {
+      // Check if we have asset documentation for this task's site
+      const taskSiteAssets = siteAssets[task.siteId];
+      if (!taskSiteAssets || !taskSiteAssets[assetType]) {
+        return 'missing';
+      }
+      const asset = taskSiteAssets[assetType];
+      const status = getAssetStatus(asset);
+      return status;
+    }
+    
+    function showAssetModalFromView(assetId, taskId) {
+      // Find the task
+      const allTasks = Object.values(weekData).flatMap(d => d.stops);
+      const task = allTasks.find(t => t.id === taskId);
+      if (!task) return;
+      
+      // Set up asset data for this site if needed
+      if (!siteAssets[task.siteId]) {
+        siteAssets[task.siteId] = getDefaultAssets();
+      }
+      currentSiteAssets = siteAssets[task.siteId];
+      currentSiteId = task.siteId;
+      
+      // Show the asset modal
+      showAssetModal(assetId);
+    }
+    
+    function toggleAssetAccordion(header) {
+      const accordion = header.parentElement;
+      const content = accordion.querySelector('.asset-accordion-content');
+      const arrow = accordion.querySelector('.asset-accordion-arrow');
+      const isOpen = accordion.classList.contains('open');
+      const taskId = accordion.dataset.taskId;
+      
+      if (isOpen) {
+        accordion.classList.remove('open');
+        content.style.display = 'none';
+        arrow.textContent = '▼';
+      } else {
+        accordion.classList.add('open');
+        content.style.display = 'block';
+        arrow.textContent = '▲';
+        
+        // Render the diagram when opening
+        const allTasks = Object.values(weekData).flatMap(d => d.stops);
+        const task = allTasks.find(t => t.id === taskId);
+        if (task) {
+          renderAssetDiagramForTask(task);
+        }
+      }
+    }
+    
+    function navigateToTask(taskId) {
+      document.getElementById('assetsView').classList.remove('active');
+      arriveAtTask(taskId);
+    }
+    
+    // Profile View
+    let isClockedIn = false;
+    let clockInTimestamp = null;
+    let currentCrew = null;
+    
+    function showProfile() {
+      document.getElementById('workPlanView').classList.remove('active');
+      document.getElementById('taskDetailView').classList.remove('active');
+      document.getElementById('assetsView').classList.remove('active');
+      document.getElementById('profileView').classList.add('active');
+      updateProfileUI();
+    }
+    
+    function updateProfileUI() {
+      const clockInBtn = document.getElementById('clockInBtn');
+      const joinCrewBtn = document.getElementById('joinCrewBtn');
+      const clockOutBtn = document.getElementById('clockOutBtn');
+      const timeInfoSection = document.getElementById('timeInfoSection');
+      const crewInfoSection = document.getElementById('crewInfoSection');
+      const statusDot = document.getElementById('profileStatusDot');
+      const statusText = document.getElementById('profileStatusText');
+      
+      if (isClockedIn) {
+        clockInBtn.style.display = 'none';
+        joinCrewBtn.style.display = 'flex';
+        clockOutBtn.style.display = 'flex';
+        timeInfoSection.style.display = 'flex';
+        statusDot.classList.remove('off-duty');
+        statusDot.classList.add('on-duty');
+        statusText.textContent = 'On Duty';
+        
+        // Update hours
+        if (clockInTimestamp) {
+          const now = new Date();
+          const hours = ((now - clockInTimestamp) / 3600000).toFixed(1);
+          document.getElementById('hoursToday').textContent = hours + 'h';
+        }
+        
+        if (currentCrew) {
+          crewInfoSection.style.display = 'block';
+          joinCrewBtn.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <line x1="23" y1="11" x2="17" y2="11"></line>
+            </svg>
+            Leave Crew`;
+          joinCrewBtn.onclick = leaveCrew;
+        } else {
+          crewInfoSection.style.display = 'none';
+          joinCrewBtn.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            Join a Crew`;
+          joinCrewBtn.onclick = showJoinCrewModal;
+        }
+      } else {
+        clockInBtn.style.display = 'flex';
+        joinCrewBtn.style.display = 'none';
+        clockOutBtn.style.display = 'none';
+        timeInfoSection.style.display = 'none';
+        crewInfoSection.style.display = 'none';
+        statusDot.classList.remove('on-duty');
+        statusDot.classList.add('off-duty');
+        statusText.textContent = 'Off Duty';
+      }
+    }
+    
+    function clockIn() {
+      isClockedIn = true;
+      clockInTimestamp = new Date();
+      const timeStr = clockInTimestamp.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      document.getElementById('clockInTime').textContent = timeStr;
+      updateProfileUI();
+      showToast('Clocked In', `Started shift at ${timeStr}`);
+    }
+    
+    function clockOut() {
+      if (currentCrew) {
+        showAppConfirm('Leave Crew?', 'You will also leave your current crew. Continue?', () => {
+          currentCrew = null;
+          performClockOut();
+        });
+        return;
+      }
+      performClockOut();
+    }
+    
+    function performClockOut() {
+      isClockedIn = false;
+      const now = new Date();
+      const hours = ((now - clockInTimestamp) / 3600000).toFixed(1);
+      clockInTimestamp = null;
+      updateProfileUI();
+      showToast('Clocked Out', `Worked ${hours} hours today`);
+    }
+    
+    // All available crews data
+    const allCrews = [
+      { id: 'martinez', name: 'Martinez', members: 'J. Martinez, R. Chen', count: 2, location: 'San Jose Service Center', distance: '0.2 mi' },
+      { id: 'williams', name: 'Williams', members: 'S. Williams, T. Park, M. Davis', count: 3, location: 'Willow Glen Yard', distance: '1.8 mi' },
+      { id: 'thompson', name: 'Thompson', members: 'K. Thompson', count: 1, location: 'Downtown Station', distance: '3.2 mi' },
+      { id: 'rodriguez', name: 'Rodriguez', members: 'L. Rodriguez, A. Patel', count: 2, location: 'Milpitas Depot', distance: '8.5 mi' },
+      { id: 'kim', name: 'Kim', members: 'M. Kim, J. Brown, R. Singh, T. Lee', count: 4, location: 'Mountain View Hub', distance: '12.1 mi' },
+      { id: 'garcia', name: 'Garcia', members: 'C. Garcia', count: 1, location: 'Sunnyvale Center', distance: '9.7 mi' },
+      { id: 'nguyen', name: 'Nguyen', members: 'D. Nguyen, P. Wilson', count: 2, location: 'Santa Clara Yard', distance: '6.3 mi' },
+      { id: 'anderson', name: 'Anderson', members: 'J. Anderson, M. Taylor, S. Moore', count: 3, location: 'Fremont Station', distance: '15.4 mi' },
+    ];
+    
+    function showJoinCrewModal() {
+      const modal = document.createElement('div');
+      modal.className = 'modal-overlay active';
+      modal.id = 'joinCrewModal';
+      modal.innerHTML = `
+        <div class="modal" style="max-height: 80vh;">
+          <div class="modal-handle"></div>
+          <div class="modal-header">
+            <div><h2>Join a Crew</h2></div>
+            <button class="modal-close" onclick="closeJoinCrewModal()">✕</button>
+          </div>
+          <div class="modal-body" style="padding: 20px;">
+            <!-- Search Input -->
+            <div style="margin-bottom: 20px;">
+              <div class="crew-search-container">
+                <svg class="crew-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="M21 21l-4.35-4.35"></path>
+                </svg>
+                <input type="text" class="crew-search-input" id="crewSearchInput" placeholder="Search by name or location..." oninput="filterCrews()">
+              </div>
+            </div>
+            
+            <!-- Nearby Crews -->
+            <div style="margin-bottom: 20px;">
+              <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">📍 Nearest Crews</div>
+              <div id="nearbyCrewsList" style="display: flex; flex-direction: column; gap: 10px;">
+                ${renderCrewOptions(allCrews.slice(0, 3), true)}
+              </div>
+            </div>
+            
+            <!-- All Crews (shown when searching) -->
+            <div id="searchResultsSection" style="display: none;">
+              <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">🔍 Search Results</div>
+              <div id="crewSearchResults" style="display: flex; flex-direction: column; gap: 10px;"></div>
+            </div>
+            
+            <!-- All Other Crews -->
+            <div id="allCrewsSection">
+              <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">All Crews</div>
+              <div id="allCrewsList" style="display: flex; flex-direction: column; gap: 10px;">
+                ${renderCrewOptions(allCrews.slice(3), false)}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      
+      // Add crew option styles if not present
+      if (!document.getElementById('crewOptionStyles')) {
+        const style = document.createElement('style');
+        style.id = 'crewOptionStyles';
+        style.textContent = `
+          .crew-option { width: 100%; padding: 14px 16px; background: var(--bg-tertiary); border: 2px solid var(--border-light); border-radius: 12px; text-align: left; cursor: pointer; transition: all 0.2s ease; }
+          .crew-option:hover { border-color: var(--purple-bright); background: rgba(139,92,246,0.05); }
+          .crew-option.nearby { background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(91,141,239,0.05)); }
+          .crew-search-container { position: relative; }
+          .crew-search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+          .crew-search-input { width: 100%; padding: 14px 14px 14px 44px; border: 2px solid var(--border-light); border-radius: 12px; font-size: 1rem; background: var(--bg-primary); transition: border-color 0.2s; }
+          .crew-search-input:focus { outline: none; border-color: var(--purple-bright); }
+          .crew-option-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+          .crew-option-name { font-weight: 600; color: var(--text-primary); }
+          .crew-option-distance { font-size: 0.75rem; color: var(--purple-bright); font-weight: 600; }
+          .crew-option-details { font-size: 0.8125rem; color: var(--text-muted); }
+          .crew-option-location { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+          .no-results { text-align: center; padding: 20px; color: var(--text-muted); }
+        `;
+        document.head.appendChild(style);
+      }
+    }
+    
+    function renderCrewOptions(crews, isNearby) {
+      return crews.map(crew => `
+        <button class="crew-option ${isNearby ? 'nearby' : ''}" onclick="joinCrew('${crew.name}', '${crew.members}')">
+          <div class="crew-option-header">
+            <span class="crew-option-name">Crew ${crew.name}</span>
+            <span class="crew-option-distance">${crew.distance}</span>
+          </div>
+          <div class="crew-option-details">${crew.members} • ${crew.count} member${crew.count > 1 ? 's' : ''}</div>
+          <div class="crew-option-location">📍 ${crew.location}</div>
+        </button>
+      `).join('');
+    }
+    
+    function filterCrews() {
+      const query = document.getElementById('crewSearchInput').value.toLowerCase().trim();
+      const searchResultsSection = document.getElementById('searchResultsSection');
+      const allCrewsSection = document.getElementById('allCrewsSection');
+      const nearbyCrewsList = document.getElementById('nearbyCrewsList');
+      const crewSearchResults = document.getElementById('crewSearchResults');
+      
+      if (query === '') {
+        // Show default view
+        searchResultsSection.style.display = 'none';
+        allCrewsSection.style.display = 'block';
+        nearbyCrewsList.style.display = 'flex';
+        document.querySelector('#joinCrewModal [style*="Nearest Crews"]')?.parentElement && 
+          (document.querySelector('#joinCrewModal div[style*="margin-bottom: 20px"]:nth-of-type(2)').style.display = 'block');
+      } else {
+        // Filter crews
+        const filtered = allCrews.filter(crew => 
+          crew.name.toLowerCase().includes(query) ||
+          crew.members.toLowerCase().includes(query) ||
+          crew.location.toLowerCase().includes(query)
+        );
+        
+        // Hide nearby and all, show search results
+        nearbyCrewsList.parentElement.style.display = 'none';
+        allCrewsSection.style.display = 'none';
+        searchResultsSection.style.display = 'block';
+        
+        if (filtered.length > 0) {
+          crewSearchResults.innerHTML = renderCrewOptions(filtered, false);
+        } else {
+          crewSearchResults.innerHTML = `<div class="no-results">No crews found matching "${query}"</div>`;
+        }
+      }
+    }
+    
+    function closeJoinCrewModal() {
+      document.getElementById('joinCrewModal')?.remove();
+    }
+    
+    function joinCrew(crewName, members) {
+      currentCrew = { name: crewName, members: members };
+      document.getElementById('crewName').textContent = 'Crew ' + crewName;
+      document.getElementById('crewMembers').textContent = 'With: ' + members;
+      closeJoinCrewModal();
+      updateProfileUI();
+      showToast('Joined Crew', `You joined Crew ${crewName}`);
+    }
+    
+    function leaveCrew() {
+      showAppConfirm('Leave Crew?', 'Are you sure you want to leave this crew?', () => {
+        const crewName = currentCrew.name;
+        currentCrew = null;
+        updateProfileUI();
+        showToast('Left Crew', `You left Crew ${crewName}`);
+      });
+    }
+    
+    function showToast(title, subtitle) {
+      // Remove existing toast
+      document.querySelector('.toast')?.remove();
+      
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <div class="toast-icon">✓</div>
+        <div class="toast-content">
+          <div class="toast-title">${title}</div>
+          <div class="toast-subtitle">${subtitle}</div>
+        </div>
+      `;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => toast.classList.add('show'), 100);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+    
+    function showAppAlert(title, message, onClose) {
+      const existing = document.getElementById('appAlertModal');
+      if (existing) existing.remove();
+      
+      const modal = document.createElement('div');
+      modal.className = 'modal-overlay active';
+      modal.id = 'appAlertModal';
+      modal.innerHTML = `
+        <div class="app-alert-modal">
+          <div class="app-alert-title">${title}</div>
+          <div class="app-alert-message">${message}</div>
+          <div class="app-alert-buttons">
+            <button class="app-alert-btn primary" onclick="closeAppAlert(${onClose ? 'true' : 'false'})">OK</button>
+          </div>
+        </div>
+      `;
+      modal.querySelector('.app-alert-btn').addEventListener('click', () => {
+        modal.remove();
+        if (onClose) onClose();
+      });
+      document.body.appendChild(modal);
+    }
+    
+    function closeAppAlert(hasCallback) {
+      const modal = document.getElementById('appAlertModal');
+      if (modal) modal.remove();
+    }
+    
+    function showAppConfirm(title, message, onConfirm, onCancel) {
+      const existing = document.getElementById('appConfirmModal');
+      if (existing) existing.remove();
+      
+      const modal = document.createElement('div');
+      modal.className = 'modal-overlay active';
+      modal.id = 'appConfirmModal';
+      modal.innerHTML = `
+        <div class="app-alert-modal">
+          <div class="app-alert-title">${title}</div>
+          <div class="app-alert-message">${message}</div>
+          <div class="app-alert-buttons">
+            <button class="app-alert-btn secondary">Cancel</button>
+            <button class="app-alert-btn primary">OK</button>
+          </div>
+        </div>
+      `;
+      modal.querySelector('.app-alert-btn.secondary').addEventListener('click', () => {
+        modal.remove();
+        if (onCancel) onCancel();
+      });
+      modal.querySelector('.app-alert-btn.primary').addEventListener('click', () => {
+        modal.remove();
+        if (onConfirm) onConfirm();
+      });
+      document.body.appendChild(modal);
+    }
     
     // UPDATE VIEW
     async function updateView() { 
@@ -4989,7 +7176,7 @@
       markers.forEach((marker, i) => {
         const el = marker.getElement();
         if (el && stops[i]) {
-          el.style.background = stops[i].color || '#2E7D32';
+          el.style.background = stops[i].color || '#8B5CF6';
           el.style.opacity = '1';
         }
       });
@@ -5097,7 +7284,7 @@
           const el = document.createElement('div');
           el.className = 'marker';
           el.innerHTML = `<span>${i + 1}</span>`;
-          el.style.background = stop.color || (stop.workType === 'critical' ? '#E53935' : stop.workType === 'preventative' ? '#FF9800' : '#2E7D32');
+          el.style.background = stop.color || (stop.workType === 'critical' ? '#E53935' : stop.workType === 'preventative' ? '#FF9800' : '#8B5CF6');
           el.style.width = '32px';
           el.style.height = '32px';
           el.style.borderRadius = '50%';
@@ -5164,7 +7351,7 @@
         bottom: 100px;
         left: 50%;
         transform: translateX(-50%);
-        background: linear-gradient(135deg, #10B981, #059669);
+        background: linear-gradient(135deg, #8B5CF6, #7C3AED);
         color: white;
         padding: 14px 20px;
         border-radius: 12px;
@@ -5396,11 +7583,8 @@
       // Route is grey by default, no need to update
     }
     
-    // INIT
-    (async function() {
-      weekData = generateWeekData();
-      await updateView();
-    })();
-  </script>
-</body>
-</html>
+    // Cover screen launch
+    function launchApp() {
+      document.getElementById('coverScreen').classList.add('hidden');
+      document.getElementById('workPlanView').classList.add('active');
+      document.getElementById('taskDetailView').classList.remove('ac
