@@ -7587,4 +7587,16 @@
     function launchApp() {
       document.getElementById('coverScreen').classList.add('hidden');
       document.getElementById('workPlanView').classList.add('active');
-      document.getElementById('taskDetailView').classList.remove('ac
+      document.getElementById('taskDetailView').classList.remove('active');
+      weekData = generateWeekData();
+      updateView();
+    }
+
+    // INIT - auto-generate data so it's ready
+    (async function() {
+      weekData = generateWeekData();
+      await updateView();
+    })();
+  </script>
+</body>
+</html>
